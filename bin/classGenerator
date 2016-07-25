@@ -1,0 +1,87 @@
+#!/usr/bin/php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$cli = new League\CLImate\CLImate();
+try {
+    $cli->arguments->add([
+        'definition' => [
+            'prefix'      => 'd',
+            'longPrefix'  => 'definition',
+            'description' => 'The item\'s definition as taken from the docs, e.g. \'[SOH]BoxItem=AnchorPoint,XPos,YPos,Width,Height,Orion,[STX]Description[ETX],Thickness,Arc,PhantomField[ETB]\'',
+            'required'    => true,
+        ]
+    ]);
+    $cli->arguments->parse();
+} catch (\Exception $e) {
+    $cli->usage();
+    exit;
+}
+
+$definition = $cli->arguments->get('definition');
+
+// remove control characters
+$pattern = '/\[(SOH|ETB)\]/';
+$definition = preg_replace($pattern, '', $definition);
+
+// array names do not necessarily match item names contained within the array, confirm item names
+$arrayNameToItemName = [];
+foreach (explode(',', $definition) as $property) {
+    if (strpos($property, 'Array') === false) {
+        continue;
+    }
+
+    $form = str_replace('Array', '', $property);
+    $formItem = sprintf('%sItem', $form);
+    $formVar = sprintf('Var%s', $form);
+    $input = $cli->input(sprintf(
+        'enter item name for %s (1 for %s, 2 for %s, or custom)',
+        $property,
+        $formItem,
+        $formVar
+    ));
+
+    $itemName = $input->prompt();
+    switch ($itemName) {
+        case 1:
+            $itemName = $formItem;
+            break;
+
+        case 2:
+            $itemName = $formVar;
+            break;
+    }
+    $arrayNameToItemName[$property] = $itemName;
+    $cli->out(sprintf('using %s', $itemName));
+}
+
+$classGenerator = Graze\UnicontrollerClient\ClassGenerator\ClassGenerator::factory();
+$classGenerator->generateClasses($definition, $arrayNameToItemName);
+
+$files = [];
+$files[] = $classGenerator->getSerialiser();
+$files[] = $classGenerator->getEntity();
+$files[] = $classGenerator->getParser();
+
+foreach ($files as $file) {
+    list($path, $contents) = $file;
+
+    $cli->out(sprintf('writing %s', $path));
+
+    $pathRelative = sprintf('%s/../%s', __DIR__, $path);
+    $writeFile = true;
+    if (file_exists($pathRelative)) {
+        $writeFile = $cli->confirm('file exists, overwrite?')->confirmed();
+    }
+
+    if (!$writeFile) {
+        $cli->out('file skipped');
+        continue;
+    }
+
+    file_put_contents($pathRelative, $contents);
+    $cli->out('file written');
+}
+
+$cli->out('all done');
