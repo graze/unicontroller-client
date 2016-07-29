@@ -16,6 +16,8 @@ use Socket\Raw\Factory as SocketFactory;
 use Graze\UnicontrollerClient\CommandSerialiser;
 use Graze\UnicontrollerClient\Parser\ParserResolver;
 use Graze\UnicontrollerClient\SocketReader;
+use Graze\UnicontrollerClient\Entity\Entity\EntityInterface;
+use Graze\UnicontrollerClient\Serialiser\SerialiserResolver;
 
 class UnicontrollerClient
 {
@@ -40,6 +42,11 @@ class UnicontrollerClient
     protected $socketReader;
 
     /**
+     * @var SerialiserResolver
+     */
+    protected $serialiserResolver;
+
+    /**
      * @var \Socket\Raw\Socket
      */
     protected $socket;
@@ -49,17 +56,20 @@ class UnicontrollerClient
      * @param CommandSerialiser $commandSerialiser
      * @param ParserResolver $parserResolver
      * @param SocketReader $socketReader
+     * @param SerialiserResolver $serialiserResolver
      */
     public function __construct(
         SocketFactory $socketFactory,
         CommandSerialiser $commandSerialiser,
         ParserResolver $parserResolver,
-        SocketReader $socketReader
+        SocketReader $socketReader,
+        SerialiserResolver $serialiserResolver
     ) {
         $this->socketFactory = $socketFactory;
         $this->commandSerialiser = $commandSerialiser;
         $this->parserResolver = $parserResolver;
         $this->socketReader = $socketReader;
+        $this->serialiserResolver = $serialiserResolver;
     }
 
     /**
@@ -73,7 +83,7 @@ class UnicontrollerClient
     /**
      * @param string $command
      * @param array $arguments
-     * @return Graze\UnicontrollerClient\Entity\Entity\EntityInterface
+     * @return EntityInterface
      */
     public function __call($command, array $arguments)
     {
@@ -84,7 +94,7 @@ class UnicontrollerClient
     /**
      * @param string $command
      * @param string $argumentsSerialised
-     * @return string
+     * @return EntityInterface
      */
     public function send($command, $argumentsSerialised)
     {
@@ -97,6 +107,16 @@ class UnicontrollerClient
     }
 
     /**
+     * @param EntityInterface $entity
+     * @return string
+     */
+    public function serialise(EntityInterface $entity)
+    {
+        $serialiser = $this->serialiserResolver->resolve($entity);
+        return $serialiser->serialise($entity);
+    }
+
+    /**
      * @return UnicontrollerClient
      */
     public static function factory()
@@ -105,7 +125,8 @@ class UnicontrollerClient
             new SocketFactory(),
             new CommandSerialiser(),
             new ParserResolver(),
-            SocketReader::factory()
+            SocketReader::factory(),
+            new SerialiserResolver()
         );
     }
 }
