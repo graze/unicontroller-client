@@ -125,7 +125,7 @@ class UnicontrollerClient
             new SocketFactory(),
             new CommandSerialiser(),
             new ParserResolver(),
-            SocketReader::factory(),
+            new SocketReader(),
             new SerialiserResolver()
         );
     }
