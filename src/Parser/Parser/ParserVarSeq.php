@@ -19,11 +19,26 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityVarSeq;
 class ParserVarSeq extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<name>[\s\S]+)?,(?<prompt>[\s\S]+)?,(?<length>-?[0-9]+)?,(?<interval>-?[0-9]+)?,(?<inputType>-?[0-9]+)?,(?<outputType>-?[0-9]+)?,(?<minValue>-?[0-9]+)?,(?<maxValue>-?[0-9]+)?,(?<rollOver>-?[0-9]+)?,(?<fixedStart>-?[0-9]+)?,(?<startValue>-?[0-9]+)?,(?<paddingType>-?[0-9]+)?,(?<repeatCount>-?[0-9]+)?,(?<resumeCount>-?[0-9]+)?/';
+        return [
+            'name',
+            'prompt',
+            'length',
+            'interval',
+            'inputType',
+            'outputType',
+            'minValue',
+            'maxValue',
+            'rollOver',
+            'fixedStart',
+            'startValue',
+            'paddingType',
+            'repeatCount',
+            'resumeCount'
+        ];
     }
 
     /**

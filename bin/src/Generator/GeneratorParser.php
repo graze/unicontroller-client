@@ -30,11 +30,13 @@ use Graze\UnicontrollerClient\Entity\Entity\Entity%s;
 class Parser%s extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^%s/';
+        return [
+%s
+        ];
     }
 
     /**
@@ -48,8 +50,15 @@ class Parser%s extends AbstractParser implements ParserInterface
 
 CODE_CLASS;
 
-    private $captureGroups = [];
+    /**
+     * @var []
+     */
+    private $properties = [];
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public function generateClass($name)
     {
         return sprintf(
@@ -57,31 +66,23 @@ CODE_CLASS;
             $this->getClassDocBlock(),
             $name,
             $name,
-            implode(',', $this->captureGroups),
+            implode(",\n", $this->properties),
             $name,
             $name
         );
     }
 
-    public function addCaptureGroup($property, $type, $arrayItem = null)
+    /**
+     * @param string $property
+     */
+    public function addProperty($property)
     {
-        switch ($type) {
-            case 'array':
-                $token = sprintf('%s,[0-9]+,[\s\S]*', $arrayItem);
-                break;
-
-            case 'string':
-                $token = '[\s\S]+';
-                break;
-
-            case 'int':
-                $token = '-?[0-9]+';
-                break;
-        }
-
-        $this->captureGroups[] = sprintf('(?<%s>%s)?', lcfirst($property), $token);
+        $this->properties[] = sprintf("            '%s'", lcfirst($property));
     }
 
+    /**
+     * @return string
+     */
     protected function getPath()
     {
         return self::PATH;

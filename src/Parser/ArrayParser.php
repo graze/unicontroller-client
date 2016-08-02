@@ -30,31 +30,22 @@ class ArrayParser
     }
 
     /**
-     * @param string $response
+     * @param string $name
+     * @param string $string
      * @return Graze\UnicontrollerClient\Entity\Entity\EntityInterface[]
      */
-    public function parse($response)
+    public function parse($name, $string)
     {
-        // get item name and count
-        $pattern = '/^(?<name>[a-z]+),(?<count>[0-9]+),/i';
-        $matches = [];
-        preg_match($pattern, $response, $matches);
-
-        if ($matches['count'] == 0) {
+        if (empty($string)) {
             return [];
         }
 
-        // remove item name and count
-        $response = preg_replace($pattern, '', $response);
+        $parser = $this->parserResolver->resolve($name);
 
-        $parser = $this->parserResolver->resolve($matches['name']);
-
-        $array = explode("\t", $response);
-        array_shift($array);
-
+        $array = explode("\r\n\t", $string);
         $entities = [];
-        foreach ($array as $element) {
-            $entities[] = $parser->parse($element);
+        foreach ($array as $item) {
+            $entities[] = $parser->parse($item);
         }
 
         return $entities;

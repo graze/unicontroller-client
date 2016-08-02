@@ -8,14 +8,31 @@ use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorSerialiser;
 
 class ClassGenerator
 {
+    /**
+     * @var GeneratorParser
+     */
     private $generatorParser;
 
+    /**
+     * @var GeneratorEntity
+     */
     private $generatorEntity;
 
+    /**
+     * @var GeneratorSerialiser
+     */
     private $generatorSerialiser;
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @param GeneratorParser $generatorParser
+     * @param GeneratorEntity $generatorEntity
+     * @param GeneratorSerialiser $generatorSerialiser
+     */
     public function __construct(
         GeneratorParser $generatorParser,
         GeneratorEntity $generatorEntity,
@@ -26,6 +43,10 @@ class ClassGenerator
         $this->generatorSerialiser = $generatorSerialiser;
     }
 
+    /**
+     * @param string $definition
+     * @param [] $arrayNameToItemName
+     */
     public function generateClasses($definition, array $arrayNameToItemName)
     {
         // get the definition name
@@ -52,13 +73,16 @@ class ClassGenerator
                 $type = 'array';
             };
 
-            $this->generatorParser->addCaptureGroup($property, $type, $arrayItem);
+            $this->generatorParser->addProperty($property);
             $this->generatorEntity->addProperty($property, $type, $arrayItem);
             $this->generatorEntity->addMethod($property, $type, $arrayItem);
             $this->generatorSerialiser->addCallSerialise($property, $type, $arrayItem);
         }
     }
 
+    /**
+     * @return []
+     */
     public function getParser()
     {
         return [
@@ -67,6 +91,9 @@ class ClassGenerator
         ];
     }
 
+    /**
+     * @return []
+     */
     public function getEntity()
     {
         return [
@@ -75,6 +102,9 @@ class ClassGenerator
         ];
     }
 
+    /**
+     * @return []
+     */
     public function getSerialiser()
     {
         return [
@@ -83,6 +113,9 @@ class ClassGenerator
         ];
     }
 
+    /**
+     * @return ClassGenerator
+     */
     public static function factory()
     {
         return new static(

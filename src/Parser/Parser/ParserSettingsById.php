@@ -19,11 +19,15 @@ use Graze\UnicontrollerClient\Entity\Entity\EntitySettingsById;
 class ParserSettingsById extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<id>-?[0-9]+)?,(?<value>-?[0-9]+)?,(?<saveToFile>-?[0-9]+)?/';
+        return [
+            'id',
+            'value',
+            'saveToFile'
+        ];
     }
 
     /**

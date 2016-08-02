@@ -19,11 +19,33 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityTtfItem;
 class ParserTtfItem extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<anchorPoint>-?[0-9]+)?,(?<xPos>-?[0-9]+)?,(?<yPos>-?[0-9]+)?,(?<width>-?[0-9]+)?,(?<height>-?[0-9]+)?,(?<orion>-?[0-9]+)?,(?<description>[\s\S]+)?,(?<fontName>[\s\S]+)?,(?<fontSize>-?[0-9]+)?,(?<fontBold>-?[0-9]+)?,(?<fontItalic>-?[0-9]+)?,(?<fontUnderline>-?[0-9]+)?,(?<inverted>-?[0-9]+)?,(?<alignment>-?[0-9]+)?,(?<data>[\s\S]+)?,(?<ftbMode>-?[0-9]+)?,(?<lineSpacing>-?[0-9]+)?,(?<removeBlank>-?[0-9]+)?,(?<fontWidth>-?[0-9]+)?,(?<charSpacing>-?[0-9]+)?,(?<phantomField>-?[0-9]+)?/';
+        return [
+            'anchorPoint',
+            'xPos',
+            'yPos',
+            'width',
+            'height',
+            'orion',
+            'description',
+            'fontName',
+            'fontSize',
+            'fontBold',
+            'fontItalic',
+            'fontUnderline',
+            'inverted',
+            'alignment',
+            'data',
+            'fTBmode',
+            'lineSpacing',
+            'removeBlank',
+            'fontWidth',
+            'charSpacing',
+            'phantomField'
+        ];
     }
 
     /**

@@ -19,11 +19,26 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityPictureItem;
 class ParserPictureItem extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<anchorPoint>-?[0-9]+)?,(?<xPos>-?[0-9]+)?,(?<yPos>-?[0-9]+)?,(?<width>-?[0-9]+)?,(?<height>-?[0-9]+)?,(?<orion>-?[0-9]+)?,(?<description>[\s\S]+)?,(?<maintain>-?[0-9]+)?,(?<pictureName>[\s\S]+)?,(?<printerReferenceName>[\s\S]+)?,(?<usePixelSize>-?[0-9]+)?,(?<pictureData>BinaryData,[0-9]+,[\s\S]*BinaryEnd)?,(?<storeInternally>-?[0-9]+)?,(?<phantomField>-?[0-9]+)?/';
+        return [
+            'anchorPoint',
+            'xPos',
+            'yPos',
+            'width',
+            'height',
+            'orion',
+            'description',
+            'maintain',
+            'pictureName',
+            'printerReferenceName',
+            'usePixelSize',
+            'pictureData',
+            'storeInternally',
+            'phantomField'
+        ];
     }
 
     /**

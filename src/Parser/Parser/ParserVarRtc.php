@@ -19,11 +19,28 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityVarRtc;
 class ParserVarRtc extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<name>[\s\S]+)?,(?<format>[\s\S]+)?,(?<offsetType>-?[0-9]+)?,(?<offsetValue>-?[0-9]+)?,(?<offset2Type>-?[0-9]+)?,(?<offset2Value>-?[0-9]+)?,(?<truncateDay>-?[0-9]+)?,(?<updatePolicy>-?[0-9]+)?,(?<updateDay>[\s\S]+)?,(?<updateHour>-?[0-9]+)?,(?<updateMinutte>-?[0-9]+)?,(?<language>-?[0-9]+)?,(?<variableOffset>-?[0-9]+)?,(?<dataSource>[\s\S]+)?,(?<cPadding>-?[0-9]+)?,(?<length>-?[0-9]+)?/';
+        return [
+            'name',
+            'format',
+            'offsetType',
+            'offsetValue',
+            'offset2Type',
+            'offset2Value',
+            'truncateDay',
+            'updatePolicy',
+            'updateDay',
+            'updateHour',
+            'updateMinutte',
+            'language',
+            'variableOffset',
+            'dataSource',
+            'cPadding',
+            'length'
+        ];
     }
 
     /**

@@ -19,11 +19,37 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityBarcodeItem;
 class ParserBarcodeItem extends AbstractParser implements ParserInterface
 {
     /**
-     * @return string
+     * @return []
      */
-    protected function getPattern()
+    protected function getProperties()
     {
-        return '/^(?<anchorPoint>-?[0-9]+)?,(?<xPos>-?[0-9]+)?,(?<yPos>-?[0-9]+)?,(?<height>-?[0-9]+)?,(?<orion>-?[0-9]+)?,(?<description>[\s\S]+)?,(?<narrow>-?[0-9]+)?,(?<inverted>-?[0-9]+)?,(?<barcodeType>-?[0-9]+)?,(?<data>[\s\S]+)?,(?<humanReadable>-?[0-9]+)?,(?<ratio>-?[0-9]+)?,(?<frame>-?[0-9]+)?,(?<showDropDowns>-?[0-9]+)?,(?<fontName>[\s\S]+)?,(?<pointSize>-?[0-9]+)?,(?<bold>-?[0-9]+)?,(?<italic>-?[0-9]+)?,(?<subType>-?[0-9]+)?,(?<preferredFormat>-?[0-9]+)?,(?<processTilde>-?[0-9]+)?,(?<separatorHeight>-?[0-9]+)?,(?<segmentWidth>-?[0-9]+)?,(?<useHibc>-?[0-9]+)?,(?<phantomField>-?[0-9]+)?/';
+        return [
+            'anchorPoint',
+            'xPos',
+            'yPos',
+            'heigth',
+            'orion',
+            'description',
+            'narrow',
+            'inverted',
+            'barcodeType',
+            'data',
+            'humanReadable',
+            'ratio',
+            'frame',
+            'showDropDowns',
+            'fontName',
+            'pointSize',
+            'bold',
+            'italic',
+            'subType',
+            'preferredFormat',
+            'processTilde',
+            'separatorHeight',
+            'segmentWidth',
+            'useHibc',
+            'phantomField'
+        ];
     }
 
     /**
