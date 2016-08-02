@@ -206,7 +206,7 @@ abstract class AbstractParser implements ParserInterface
     public function parse($string)
     {
         $string = trim($string, "\x01\x17");
-
+        $string = substr($string, strpos($string, '=') + 1); // remove 'answerName=' section
         $strlen = strlen($string);
         for ($this->pointer = 0; $this->pointer < $strlen; $this->pointer++) {
             $character = $string[$this->pointer];
