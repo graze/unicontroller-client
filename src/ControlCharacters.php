@@ -14,8 +14,8 @@ namespace Graze\UnicontrollerClient;
 
 class ControlCharacters
 {
-    const SOH = 01;
-    const ETB = 23;
-    const STX = 02;
-    const ETX = 03;
+    const SOH = "\x01";
+    const ETB = "\x23";
+    const STX = "\x02";
+    const ETX = "\x03";
 }
