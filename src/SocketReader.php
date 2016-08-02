@@ -13,7 +13,6 @@
 namespace Graze\UnicontrollerClient;
 
 use Socket\Raw\Socket;
-use Graze\UnicontrollerClient\ControlCharacters;
 
 class SocketReader
 {
@@ -23,27 +22,26 @@ class SocketReader
      */
     public function read(Socket $socket)
     {
-        $characterSoh = chr(ControlCharacters::SOH);
         $characterEtb = null;
-        $response = '';
+        $buffer = '';
         while (true) {
             $character = $socket->read(1);
 
             // the character we terminate on depends on the first character in the response
             if (!isset($characterEtb)) {
-                if ($character == $characterSoh) {
-                    $characterEtb = chr(ControlCharacters::ETB);
+                if ($character == "\x01") {
+                    $characterEtb = "\x17";
                 } else {
                     $characterEtb = "\n";
                 }
             }
 
-            $response .= $character;
+            $buffer .= $character;
             if ($character == $characterEtb) {
                 break;
             }
         }
 
-        return $response;
+        return $buffer;
     }
 }

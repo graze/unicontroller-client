@@ -12,8 +12,6 @@
  */
 namespace Graze\UnicontrollerClient;
 
-use Graze\UnicontrollerClient\ControlCharacters;
-
 class StringEscaper
 {
     /**
@@ -22,6 +20,6 @@ class StringEscaper
      */
     public function escape($string)
     {
-        return sprintf('%c%s%c', ControlCharacters::STX, $string, ControlCharacters::ETX);
+        return sprintf('%s%s%s', "\x02", $string, "\x03");
     }
 }

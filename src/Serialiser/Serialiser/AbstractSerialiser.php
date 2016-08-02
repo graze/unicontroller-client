@@ -15,7 +15,6 @@ namespace Graze\UnicontrollerClient\Serialiser\Serialiser;
 use Graze\UnicontrollerClient\Serialiser\SerialiserResolver;
 use Graze\UnicontrollerClient\StringEscaper;
 use Graze\UnicontrollerClient\Serialiser\ArraySerialiser;
-use Graze\UnicontrollerClient\ControlCharacters;
 
 abstract class AbstractSerialiser
 {
@@ -50,10 +49,10 @@ abstract class AbstractSerialiser
     {
         $arrayData = $this->arraySerialiser->serialise($entities);
         return sprintf(
-            "%c%s%c,%d,\r\n%s",
-            ControlCharacters::STX,
+            "%s%s%s,%d,\r\n%s",
+            "\x02",
             $itemName,
-            ControlCharacters::ETX,
+            "\x03",
             count($entities),
             $arrayData
         );

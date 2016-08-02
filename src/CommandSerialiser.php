@@ -12,8 +12,6 @@
  */
 namespace Graze\UnicontrollerClient;
 
-use Graze\UnicontrollerClient\ControlCharacters;
-
 class CommandSerialiser
 {
     /**
@@ -24,11 +22,11 @@ class CommandSerialiser
     public function serialiseCommand($command, $argumentsSerialised)
     {
         return sprintf(
-            "%c%s=%s%c\r\n",
-            ControlCharacters::SOH,
+            "%s%s=%s%s\r\n",
+            "\x01",
             $command,
             $argumentsSerialised,
-            ControlCharacters::ETB
+            "\x17"
         );
     }
 
@@ -43,7 +41,7 @@ class CommandSerialiser
             if (is_numeric($value)) {
                 return;
             }
-            $value = sprintf('%c%s%c', ControlCharacters::STX, $value, ControlCharacters::ETX);
+            $value = sprintf('%s%s%s', "\x02", $value, "\x03");
         });
 
         return implode(',', $arguments);
