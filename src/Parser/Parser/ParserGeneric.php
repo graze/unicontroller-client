@@ -12,25 +12,44 @@
  */
 namespace Graze\UnicontrollerClient\Parser\Parser;
 
-use Graze\UnicontrollerClient\Parser\Parser\AbstractParser;
 use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
+use Graze\UnicontrollerClient\Entity\EntityHydrator;
 use Graze\UnicontrollerClient\Entity\Entity\EntityGeneric;
 
-class ParserGeneric extends AbstractParser implements ParserInterface
+class ParserGeneric implements ParserInterface
 {
     /**
-     * @return string
+     * @var EntityHydrator
      */
-    protected function getPattern()
+    private $entityHydrator;
+
+    /**
+     * @param EntityHydrator $entityHydrator
+     */
+    public function __construct(EntityHydrator $entityHydrator)
     {
-        return '/(?<success>^\r\n$)/';
+        $this->entityHydrator = $entityHydrator;
     }
 
     /**
-     * @return EntityGeneric
+     * @param string $string
+     * @return Graze\UnicontrollerClient\Entity\Entity\EntityInterface
      */
-    protected function getEntity()
+    public function parse($string)
     {
-        return new EntityGeneric();
+        return $this->entityHydrator->hydrate(
+            new EntityGeneric(),
+            ['success' => $string == "\r\n"]
+        );
+    }
+
+    /**
+     * @return ParserGeneric
+     */
+    public static function factory()
+    {
+        return new static(
+            new EntityHydrator()
+        );
     }
 }

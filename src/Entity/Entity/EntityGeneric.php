@@ -16,10 +16,16 @@ use Graze\UnicontrollerClient\Entity\Entity\EntityInterface;
 
 class EntityGeneric implements EntityInterface
 {
-    private $success = false;
+    /**
+     * @var bool
+     */
+    private $success;
 
+    /**
+     * @return bool
+     */
     public function success()
     {
-        return (bool) $this->success;
+        return $this->success;
     }
 }
