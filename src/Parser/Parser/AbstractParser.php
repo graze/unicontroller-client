@@ -15,9 +15,17 @@ namespace Graze\UnicontrollerClient\Parser\Parser;
 use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
 use Graze\UnicontrollerClient\Entity\EntityHydrator;
 use Graze\UnicontrollerClient\Parser\ArrayParser;
+use Graze\UnicontrollerClient\Parser\BinaryParser;
 
 abstract class AbstractParser implements ParserInterface
 {
+    const CONTEXT_NONE = 1;
+    const CONTEXT_ANSWER = 2;
+    const CONTEXT_FLUSH = 3;
+    const CONTEXT_STRING = 4;
+    const CONTEXT_ARRAY = 5;
+    const CONTEXT_BINARY = 6;
+
     /**
      * @var EntityHydrator
      */
@@ -29,72 +37,66 @@ abstract class AbstractParser implements ParserInterface
     private $arrayParser;
 
     /**
+     * @var BinaryParser
+     */
+    private $binaryParser;
+
+    /**
      * @var []
      */
-    private $tokenToMethod = [
-        "\x02" => 'stringStart',
-        "\x03" => 'stringEnd',
-        "BinaryData" => 'stringStart',
-        "BinaryEnd" => 'stringEnd',
-        "\r\n" => 'handleCarriageReturn',
-        "\x02LineItem\x03" => 'arrayStart',
-        "\x02BoxItem\x03" => 'arrayStart',
-        "\x02TtfItem\x03" => 'arrayStart',
-        "\x02BarcodeItem\x03" => 'arrayStart',
-        "\x02PictureItem\x03" => 'arrayStart',
-        "\x02VarPrompt\x03" => 'arrayStart',
-        "\x02VarSeq\x03" => 'arrayStart',
-        "\x02VarRtc\x03" => 'arrayStart',
-        "\x02VarDatabase\x03" => 'arrayStart',
-        "\x02VarUserId\x03" => 'arrayStart',
-        "\x02VarShiftCode\x03" => 'arrayStart',
-        "\x02VarMachineId\x03" => 'arrayStart',
-        "\x02VarDatabaseField\x03" => 'arrayStart',
-        "\x02VarMacro\x03" => 'arrayStart',
-        "\x02VarMacroOutput\x03" => 'arrayStart',
-        "\x02VarSerial\x03" => 'arrayStart',
-        "\x02SettingsById\x03" => 'arrayStart'
+    private $contextCurrentToTokenToContextNew = [
+        self::CONTEXT_NONE => [
+            '=' => self::CONTEXT_ANSWER,
+            ',' => self::CONTEXT_FLUSH,
+            "\x02" => self::CONTEXT_STRING,
+            'BinaryData' => self::CONTEXT_BINARY,
+        ],
+        self::CONTEXT_STRING => [
+            "\x03" => self::CONTEXT_NONE,
+            "\x02LineItem\x03" => self::CONTEXT_ARRAY,
+            "\x02BoxItem\x03" => self::CONTEXT_ARRAY,
+            "\x02TtfItem\x03" => self::CONTEXT_ARRAY,
+            "\x02BarcodeItem\x03" => self::CONTEXT_ARRAY,
+            "\x02PictureItem\x03" => self::CONTEXT_ARRAY,
+            "\x02VarPrompt\x03" => self::CONTEXT_ARRAY,
+            "\x02VarSeq\x03" => self::CONTEXT_ARRAY,
+            "\x02VarRtc\x03" => self::CONTEXT_ARRAY,
+            "\x02VarDatabase\x03" => self::CONTEXT_ARRAY,
+            "\x02VarUserId\x03" => self::CONTEXT_ARRAY,
+            "\x02VarShiftCode\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMachineId\x03" => self::CONTEXT_ARRAY,
+            "\x02VarDatabaseField\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMacro\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMacroOutput\x03" => self::CONTEXT_ARRAY,
+            "\x02VarSerial\x03" => self::CONTEXT_ARRAY,
+            "\x02SettingsById\x03" => self::CONTEXT_ARRAY,
+        ],
+        self::CONTEXT_ARRAY => [
+            "\x02" => self::CONTEXT_STRING,
+            'BinaryData' => self::CONTEXT_BINARY,
+            "\r\n," => self::CONTEXT_NONE,
+        ],
+        self::CONTEXT_BINARY => [
+            'BinaryEnd' => self::CONTEXT_NONE,
+        ],
     ];
 
     /**
-     * @var bool
+     * @var []
      */
-    private $isString = false;
-
-    /**
-     * @var bool
-     */
-    private $isArray = false;
-
-    /**
-     * @var int
-     */
-    private $arrayLength;
+    private $context = [
+        self::CONTEXT_NONE
+    ];
 
     /**
      * @var string
      */
-    private $arrayItemCurrent;
-
-    /**
-     * @var int
-     */
-    private $arrayItemsRemaining;
-
-    /**
-     * @var int
-     */
-    private $pointer;
+    private $contextPrevious;
 
     /**
      * @var string
      */
     private $buffer = '';
-
-    /**
-     * @var int
-     */
-    private $propertyIndex = 0;
 
     /**
      * @var []
@@ -104,89 +106,110 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @param EntityHydrator $entityHydrator
      * @param ArrayParser $arrayParser
+     * @param BinaryParser $binaryParser
      */
-    public function __construct(EntityHydrator $entityHydrator, ArrayParser $arrayParser)
+    public function __construct(EntityHydrator $entityHydrator, ArrayParser $arrayParser, BinaryParser $binaryParser)
     {
         $this->entityHydrator = $entityHydrator;
         $this->arrayParser = $arrayParser;
-    }
-
-    private function stringStart()
-    {
-        $this->isString = true;
-    }
-
-    private function stringEnd()
-    {
-        $this->isString = false;
-    }
-
-    private function arrayStart()
-    {
-        $this->isArray = true;
-        $this->arrayItemCurrent = $this->buffer;
-        $this->buffer = '';
-        $this->pointer++; // skip  next comma to the array length
+        $this->binaryParser = $binaryParser;
     }
 
     /**
-     * @return bool
+     * @param string $string
+     * @return []
      */
-    private function handleComma()
+    public function parse($string)
     {
-        if ($this->isString) {
-            return false;
+        $string = trim($string, "\x01\x17");
+        for ($pointer = 0; $pointer < strlen($string); $pointer++) {
+            $character = $string[$pointer];
+
+            $tokenToContextNew = $this->contextCurrentToTokenToContextNew[$this->getContext()];
+            foreach ($tokenToContextNew as $token => $contextNew) {
+                $tokenLength = strlen($token);
+                $subject = substr($this->buffer, $tokenLength * -1);
+                if ($subject != $token) {
+                    continue;
+                }
+
+                $this->changeContext($contextNew);
+            }
+
+            $this->buffer .= $character;
         }
 
-        if ($this->isArray && is_null($this->arrayItemsRemaining)) {
-            // just entered an array
-            $this->arrayLength = $this->buffer;
-            $this->arrayItemsRemaining = $this->arrayLength;
-            $this->pointer += 2; // skip initial carriage return
-            $this->buffer = '';
-            return true;
-        }
-
-        if (!$this->isArray || $this->arrayItemsRemaining == 0) {
+        if ($this->contextPrevious != self::CONTEXT_ARRAY) {
+            // flush the buffer unless we were in an array - this would have been explicitly flushed
             $this->flushBuffer();
-            return true;
         }
 
-        return false;
+        $data = array_combine($this->getProperties(), $this->propertyValues);
+        $this->propertyValues = [];
+
+        return $this->entityHydrator->hydrate($this->getEntity(), $data);
     }
 
-    private function handleCarriageReturn()
+    /**
+     * @return string
+     */
+    private function getContext()
     {
-        if (!$this->isArray || $this->isString) {
+        return end($this->context);
+    }
+
+    /**
+     * @param string $context
+     */
+    private function changeContext($context)
+    {
+        if ($context == self::CONTEXT_ANSWER) {
+            $this->buffer = ''; // remove 'answerName='
             return;
         }
 
-        if ($this->arrayItemsRemaining == 0) {
-            // end of array
+        if ($context == self::CONTEXT_FLUSH) {
+            $this->flushBuffer();
+            $this->contextPrevious = self::CONTEXT_NONE;
             return;
         }
 
-        $this->arrayItemsRemaining--;
+        if ($context != self::CONTEXT_NONE) {
+            // enter new context
+            $this->context[] = $context;
+            return;
+        }
+
+        // exit current context
+        $this->contextPrevious = array_pop($this->context);
+
+        // have to manually flush buffer for this transition as comma is part of exit token
+        if ($this->contextPrevious == self::CONTEXT_ARRAY) {
+            $this->flushBuffer();
+        }
     }
 
     private function flushBuffer()
     {
-        if ($this->isArray) {
-            $arrayItemCurrentTrimmed = trim($this->arrayItemCurrent, "\x02\x03");
-            $bufferTrimmed = trim($this->buffer, "\r\n\t");
-            $propertyValue = $this->arrayParser->parse($arrayItemCurrentTrimmed, $bufferTrimmed);
+        switch ($this->contextPrevious) {
+            case self::CONTEXT_ARRAY:
+                $propertyValue = $this->arrayParser->parse($this->buffer);
+                break;
 
-            $this->isArray = false;
-            $this->arrayLength = 0;
-            $this->arrayItemCurrent = null;
-            $this->arrayItemsRemaining = null;
-        } else {
-            $propertyValue = trim($this->buffer, "\x02\x03");
+            case self::CONTEXT_BINARY:
+                if ($this->getContext() != self::CONTEXT_NONE) {
+                    break;
+                }
+
+                $propertyValue = $this->binaryParser->parse($this->buffer);
+                break;
+
+            default:
+                $propertyValue = trim($this->buffer, "\x02\x03,");
         }
 
-        $this->propertyValues[$this->propertyIndex] = $propertyValue;
+        $this->propertyValues[] = $propertyValue;
         $this->buffer = '';
-        $this->propertyIndex++;
     }
 
     /**
@@ -200,51 +223,14 @@ abstract class AbstractParser implements ParserInterface
     abstract protected function getEntity();
 
     /**
-     * @param string $string
-     * @return []
-     */
-    public function parse($string)
-    {
-        $string = trim($string, "\x01\x17");
-        $string = substr($string, strpos($string, '=') + 1); // remove 'answerName=' section
-        $strlen = strlen($string);
-        for ($this->pointer = 0; $this->pointer < $strlen; $this->pointer++) {
-            $character = $string[$this->pointer];
-
-            if ($character == ',') {
-                $isHandled = $this->handleComma();
-                if ($isHandled) {
-                    continue;
-                }
-            }
-
-            $this->buffer .= $character;
-
-            foreach ($this->tokenToMethod as $token => $method) {
-                $tokenLength = strlen($token);
-                $subject = substr($this->buffer, $tokenLength * -1);
-                if ($subject == $token) {
-                    $this->$method();
-                }
-            }
-        }
-
-        $this->flushBuffer();
-        $data = array_combine($this->getProperties(), $this->propertyValues);
-        $entity = $this->entityHydrator->hydrate($this->getEntity(), $data);
-        $this->propertyValues = [];
-
-        return $entity;
-    }
-
-    /**
      * @return ParserInterface
      */
     public static function factory()
     {
         return new static(
             new EntityHydrator(),
-            ArrayParser::factory()
+            ArrayParser::factory(),
+            new BinaryParser()
         );
     }
 }

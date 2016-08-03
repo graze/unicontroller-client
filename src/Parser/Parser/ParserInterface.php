@@ -15,8 +15,8 @@ namespace Graze\UnicontrollerClient\Parser\Parser;
 interface ParserInterface
 {
     /**
-     * @param string $response
+     * @param string $string
      * @return Graze\UnicontrollerClient\Entity\Entity\EntityInterface
      */
-    public function parse($response);
+    public function parse($string);
 }

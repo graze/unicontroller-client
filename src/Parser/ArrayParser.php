@@ -30,19 +30,24 @@ class ArrayParser
     }
 
     /**
-     * @param string $name
      * @param string $string
      * @return Graze\UnicontrollerClient\Entity\Entity\EntityInterface[]
      */
-    public function parse($name, $string)
+    public function parse($string)
     {
-        if (empty($string)) {
+        list($name, $length, $items) = explode(',', $string, 3);
+
+        if ($length == 0) {
             return [];
         }
 
-        $parser = $this->parserResolver->resolve($name);
+        // all the trimmings
+        $name = trim($name, "\x02\x03");
+        $items = trim($items, "\r\n\t,");
 
-        $array = explode("\r\n\t", $string);
+        $parser = $this->parserResolver->resolve($name);
+        $array = explode("\r\n\t", $items);
+
         $entities = [];
         foreach ($array as $item) {
             $entities[] = $parser->parse($item);
