@@ -49,7 +49,7 @@ class EntityReadDesign implements EntityInterface
     /**
      * @var int
      */
-    protected $driverID;
+    protected $driverId;
 
     /**
      * @var int

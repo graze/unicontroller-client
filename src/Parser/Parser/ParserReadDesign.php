@@ -34,7 +34,7 @@ class ParserReadDesign extends AbstractParser implements ParserInterface
             'printCount',
             'cycleSize',
             'readOk',
-            'lineArry',
+            'lineArray',
             'boxArray',
             'ttfArray',
             'barcodeArray',

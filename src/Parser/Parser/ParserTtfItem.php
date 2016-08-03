@@ -39,7 +39,7 @@ class ParserTtfItem extends AbstractParser implements ParserInterface
             'inverted',
             'alignment',
             'data',
-            'fTBmode',
+            'ftbMode',
             'lineSpacing',
             'removeBlank',
             'fontWidth',
