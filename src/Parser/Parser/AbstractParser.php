@@ -121,7 +121,6 @@ abstract class AbstractParser implements ParserInterface
      */
     public function parse($string)
     {
-        $string = trim($string, "\x01\x17");
         for ($pointer = 0; $pointer < strlen($string); $pointer++) {
             $character = $string[$pointer];
 

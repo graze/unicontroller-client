@@ -42,6 +42,6 @@ class SocketReader
             }
         }
 
-        return $buffer;
+        return trim($buffer, "\x01\x17");
     }
 }
