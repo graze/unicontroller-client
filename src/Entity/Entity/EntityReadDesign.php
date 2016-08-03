@@ -250,17 +250,17 @@ class EntityReadDesign implements EntityInterface
     /**
      * @return int
      */
-    public function getDriverID()
+    public function getDriverId()
     {
-        return $this->driverID;
+        return $this->driverId;
     }
 
     /**
-     * @param int $driverID
+     * @param int $driverId
      */
-    public function setDriverID($driverID)
+    public function setDriverId($driverId)
     {
-        $this->driverID = $driverID;
+        $this->driverId = $driverId;
     }
 
     /**
