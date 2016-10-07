@@ -25,14 +25,14 @@ class SerialiserVarDatabaseField extends AbstractSerialiser implements Serialise
     public function serialise(EntityInterface $entity)
     {
         $properties = [];
-        $properties[] = $this->stringEscaper->escape($entity->getdBaseField());
-        $properties[] = $this->stringEscaper->escape($entity->getVarDatabase1());
-        $properties[] = $this->stringEscaper->escape($entity->getCOL_DATA2());
-        $properties[] = $entity->get0();
-        $properties[] = $entity->get0();
-        $properties[] = $entity->get4();
-        $properties[] = $entity->get1();
-        $properties[] = $entity->get10();
+        $properties[] = $this->stringEscaper->escape($entity->getName());
+        $properties[] = $this->stringEscaper->escape($entity->getDataSource());
+        $properties[] = $this->stringEscaper->escape($entity->getDataField());
+        $properties[] = $entity->getDisplayLength();
+        $properties[] = $entity->getTrimTrailingSpaces();
+        $properties[] = $entity->getNumberOfDecimals();
+        $properties[] = $entity->getcPadding();
+        $properties[] = $entity->getLength();
 
         return implode(',', $properties);
     }

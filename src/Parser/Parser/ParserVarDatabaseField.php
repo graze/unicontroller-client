@@ -24,14 +24,14 @@ class ParserVarDatabaseField extends AbstractParser implements ParserInterface
     protected function getProperties()
     {
         return [
-            'dBaseField',
-            'varDatabase1',
-            'cOL_DATA2',
-            '0',
-            '0',
-            '4',
-            '1',
-            '10'
+            'name',
+            'dataSource',
+            'dataField',
+            'displayLength',
+            'trimTrailingSpaces',
+            'numberOfDecimals',
+            'cPadding',
+            'length'
         ];
     }
 

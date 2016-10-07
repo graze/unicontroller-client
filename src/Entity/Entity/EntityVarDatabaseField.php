@@ -19,168 +19,168 @@ class EntityVarDatabaseField implements EntityInterface
     /**
      * @var string
      */
-    protected $dBaseField;
+    protected $name;
 
     /**
      * @var string
      */
-    protected $varDatabase1;
+    protected $dataSource;
 
     /**
      * @var string
      */
-    protected $cOL_DATA2;
+    protected $dataField;
 
     /**
      * @var int
      */
-    protected $0;
+    protected $displayLength;
 
     /**
      * @var int
      */
-    protected $0;
+    protected $trimTrailingSpaces;
 
     /**
      * @var int
      */
-    protected $4;
+    protected $numberOfDecimals;
 
     /**
      * @var int
      */
-    protected $1;
+    protected $cPadding;
 
     /**
      * @var int
      */
-    protected $10;
+    protected $length;
 
     /**
      * @return string
      */
-    public function getdBaseField()
+    public function getName()
     {
-        return $this->dBaseField;
+        return $this->name;
     }
 
     /**
-     * @param string $dBaseField
+     * @param string $name
      */
-    public function setdBaseField($dBaseField)
+    public function setName($name)
     {
-        $this->dBaseField = $dBaseField;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVarDatabase1()
-    {
-        return $this->varDatabase1;
-    }
-
-    /**
-     * @param string $varDatabase1
-     */
-    public function setVarDatabase1($varDatabase1)
-    {
-        $this->varDatabase1 = $varDatabase1;
+        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getCOL_DATA2()
+    public function getDataSource()
     {
-        return $this->cOL_DATA2;
+        return $this->dataSource;
     }
 
     /**
-     * @param string $cOL_DATA2
+     * @param string $dataSource
      */
-    public function setCOL_DATA2($cOL_DATA2)
+    public function setDataSource($dataSource)
     {
-        $this->cOL_DATA2 = $cOL_DATA2;
+        $this->dataSource = $dataSource;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function get0()
+    public function getDataField()
     {
-        return $this->0;
+        return $this->dataField;
     }
 
     /**
-     * @param int $0
+     * @param string $dataField
      */
-    public function set0($0)
+    public function setDataField($dataField)
     {
-        $this->0 = $0;
-    }
-
-    /**
-     * @return int
-     */
-    public function get0()
-    {
-        return $this->0;
-    }
-
-    /**
-     * @param int $0
-     */
-    public function set0($0)
-    {
-        $this->0 = $0;
+        $this->dataField = $dataField;
     }
 
     /**
      * @return int
      */
-    public function get4()
+    public function getDisplayLength()
     {
-        return $this->4;
+        return $this->displayLength;
     }
 
     /**
-     * @param int $4
+     * @param int $displayLength
      */
-    public function set4($4)
+    public function setDisplayLength($displayLength)
     {
-        $this->4 = $4;
-    }
-
-    /**
-     * @return int
-     */
-    public function get1()
-    {
-        return $this->1;
-    }
-
-    /**
-     * @param int $1
-     */
-    public function set1($1)
-    {
-        $this->1 = $1;
+        $this->displayLength = $displayLength;
     }
 
     /**
      * @return int
      */
-    public function get10()
+    public function getTrimTrailingSpaces()
     {
-        return $this->10;
+        return $this->trimTrailingSpaces;
     }
 
     /**
-     * @param int $10
+     * @param int $trimTrailingSpaces
      */
-    public function set10($10)
+    public function setTrimTrailingSpaces($trimTrailingSpaces)
     {
-        $this->10 = $10;
+        $this->trimTrailingSpaces = $trimTrailingSpaces;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfDecimals()
+    {
+        return $this->numberOfDecimals;
+    }
+
+    /**
+     * @param int $numberOfDecimals
+     */
+    public function setNumberOfDecimals($numberOfDecimals)
+    {
+        $this->numberOfDecimals = $numberOfDecimals;
+    }
+
+    /**
+     * @return int
+     */
+    public function getcPadding()
+    {
+        return $this->cPadding;
+    }
+
+    /**
+     * @param int $cPadding
+     */
+    public function setcPadding($cPadding)
+    {
+        $this->cPadding = $cPadding;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param int $length
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
     }
 }
