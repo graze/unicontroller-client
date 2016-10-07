@@ -82,19 +82,19 @@ CODE_METHOD;
 
     public function addMethod($property, $type, $arrayItem = null)
     {
-        $propertLowerCase = lcfirst($property);
+        $propertyLowerCase = lcfirst($property);
         $this->methods[] = sprintf(
             self::CODE_METHOD,
             $type == 'array' ? sprintf('%s[]', $arrayItem) : $type,
             $property,
-            $propertLowerCase,
+            $propertyLowerCase,
             $type,
-            $propertLowerCase,
+            $propertyLowerCase,
             $property,
             $type == 'array' ? 'array ' : '',
-            $propertLowerCase,
-            $propertLowerCase,
-            $propertLowerCase
+            $propertyLowerCase,
+            $propertyLowerCase,
+            $propertyLowerCase
         );
     }
 
