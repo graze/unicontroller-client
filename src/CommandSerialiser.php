@@ -38,10 +38,9 @@ class CommandSerialiser
     {
         // escape strings
         array_walk($arguments, function (&$value) {
-            if (is_numeric($value)) {
-                return;
+            if (!is_numeric($value)) {
+                $value = sprintf('%s%s%s', "\x02", $value, "\x03");
             }
-            $value = sprintf('%s%s%s', "\x02", $value, "\x03");
         });
 
         return implode(',', $arguments);
