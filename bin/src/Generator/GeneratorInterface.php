@@ -6,5 +6,5 @@ interface GeneratorInterface
 {
     public function generateClass($definition);
 
-    public function getFilePath($name);
+    public function getOutputPath($name);
 }

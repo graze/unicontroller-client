@@ -17,82 +17,67 @@ use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
 
 class GeneratorSerialiser extends AbstractGenerator implements GeneratorInterface
 {
-    const PATH = 'src/Serialiser/Serialiser/Serialiser%s.php';
+    const OUTPUT_PATH = 'src/Serialiser/Serialiser/Serialiser%s.php';
 
-    const CODE_CLASS = <<<CODE_CLASS
-%s
-namespace Graze\UnicontrollerClient\Serialiser\Serialiser;
-
-use Graze\UnicontrollerClient\Serialiser\Serialiser\AbstractSerialiser;
-use Graze\UnicontrollerClient\Serialiser\Serialiser\SerialiserInterface;
-use Graze\UnicontrollerClient\Entity\Entity\EntityInterface;
-
-class Serialiser%s extends AbstractSerialiser implements SerialiserInterface
-{
     /**
-     * @param EntityInterface \$entity
-     * @return string
+     * @var string
      */
-    public function serialise(EntityInterface \$entity)
-    {
-        \$properties = [];
-%s
-
-        return implode(',', \$properties);
-    }
-}
-
-CODE_CLASS;
-
-    const CODE_CALL_SERIALISE_ARRAY = <<<CODE_CALL_SERIALISE_ARRAY
-        \$properties[] = \$this->serialiseArray(\$entity->get%s(), '%s');
-CODE_CALL_SERIALISE_ARRAY;
-
-    const CODE_CALL_SERIALISE_STRING =<<<CODE_CALL_SERIALISE_STRING
-        \$properties[] = \$this->stringEscaper->escape(\$entity->get%s());
-CODE_CALL_SERIALISE_STRING;
-
-    const CODE_CALL_SERIALISE_INT =<<<CODE_CALL_SERIALISE_INT
-        \$properties[] = \$entity->get%s();
-CODE_CALL_SERIALISE_INT;
-
     private $callsSerialise = [];
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public function generateClass($name)
     {
         return sprintf(
-            self::CODE_CLASS,
-            $this->getClassDocBlock(),
+            $this->getTemplate('Serialiser/SerialiserClass'),
             $name,
             implode("\n", $this->callsSerialise)
         );
     }
 
+    /**
+     * @param string $property
+     * @param string $type
+     * @param string $arrayItem
+     */
     public function addCallSerialise($property, $type, $arrayItem = null)
     {
         switch ($type) {
             case 'array':
                 $call = sprintf(
-                    self::CODE_CALL_SERIALISE_ARRAY,
+                    $this->getTemplate('Serialiser/SerialiserCallSerialiseArray'),
                     $property,
                     $arrayItem
                 );
                 break;
 
             case 'string':
-                $call = sprintf(self::CODE_CALL_SERIALISE_STRING, $property);
+                $call = sprintf(
+                    $this->getTemplate('Serialiser/SerialiserCallSerialiseString'),
+                    $property
+                );
                 break;
 
             case 'int':
-                $call = sprintf(self::CODE_CALL_SERIALISE_INT, $property);
+                $call = sprintf(
+                    $this->getTemplate('Serialiser/SerialiserCallSerialiseInt'),
+                    $property
+                );
                 break;
         }
 
         $this->callsSerialise[] = $call;
     }
 
-    protected function getPath()
+    /**
+     * @param string $name
+     *
+     * @return [type]
+     */
+    public function getOutputPath($name)
     {
-        return self::PATH;
+        return sprintf(self::OUTPUT_PATH, $name);
     }
 }

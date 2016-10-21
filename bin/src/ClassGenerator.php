@@ -45,7 +45,7 @@ class ClassGenerator
 
     /**
      * @param string $definition
-     * @param [] $arrayNameToItemName
+     * @param array $arrayNameToItemName
      */
     public function generateClasses($definition, array $arrayNameToItemName)
     {
@@ -86,7 +86,7 @@ class ClassGenerator
     public function getParser()
     {
         return [
-            $this->generatorParser->getFilePath($this->name),
+            $this->generatorParser->getOutputPath($this->name),
             $this->generatorParser->generateClass($this->name)
         ];
     }
@@ -97,7 +97,7 @@ class ClassGenerator
     public function getEntity()
     {
         return [
-            $this->generatorEntity->getFilePath($this->name),
+            $this->generatorEntity->getOutputPath($this->name),
             $this->generatorEntity->generateClass($this->name)
         ];
     }
@@ -108,7 +108,7 @@ class ClassGenerator
     public function getSerialiser()
     {
         return [
-            $this->generatorSerialiser->getFilePath($this->name),
+            $this->generatorSerialiser->getOutputPath($this->name),
             $this->generatorSerialiser->generateClass($this->name)
         ];
     }

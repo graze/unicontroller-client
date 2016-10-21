@@ -17,41 +17,10 @@ use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
 
 class GeneratorParser extends AbstractGenerator implements GeneratorInterface
 {
-    const PATH = 'src/Parser/Parser/Parser%s.php';
-
-    const CODE_CLASS = <<<CODE_CLASS
-%s
-namespace Graze\UnicontrollerClient\Parser\Parser;
-
-use Graze\UnicontrollerClient\Parser\Parser\AbstractParser;
-use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
-use Graze\UnicontrollerClient\Entity\Entity\Entity%s;
-
-class Parser%s extends AbstractParser implements ParserInterface
-{
-    /**
-     * @return []
-     */
-    protected function getProperties()
-    {
-        return [
-%s
-        ];
-    }
+    const OUTPUT_PATH = 'src/Parser/Parser/Parser%s.php';
 
     /**
-     * @return Entity%s
-     */
-    protected function getEntity()
-    {
-        return new Entity%s();
-    }
-}
-
-CODE_CLASS;
-
-    /**
-     * @var []
+     * @var array
      */
     private $properties = [];
 
@@ -62,8 +31,7 @@ CODE_CLASS;
     public function generateClass($name)
     {
         return sprintf(
-            self::CODE_CLASS,
-            $this->getClassDocBlock(),
+            $this->getTemplate('Parser/ParserClass'),
             $name,
             $name,
             implode(",\n", $this->properties),
@@ -81,10 +49,11 @@ CODE_CLASS;
     }
 
     /**
+     * @param string $name
      * @return string
      */
-    protected function getPath()
+    public function getOutputPath($name)
     {
-        return self::PATH;
+        return sprintf(self::OUTPUT_PATH, $name);
     }
 }

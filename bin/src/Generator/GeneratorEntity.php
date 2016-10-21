@@ -17,74 +17,56 @@ use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
 
 class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
 {
-    const PATH = 'src/Entity/Entity/Entity%s.php';
-
-    const CODE_CLASS = <<<CODE_CLASS
-%s
-namespace Graze\UnicontrollerClient\Entity\Entity;
-
-use Graze\UnicontrollerClient\Entity\Entity\EntityInterface;
-
-class Entity%s implements EntityInterface
-{
-%s
-
-%s
-}
-
-CODE_CLASS;
-
-    const CODE_PROPERTY = <<<CODE_PROPERTY
-    /**
-     * @var %s
-     */
-    protected $%s;
-CODE_PROPERTY;
-
-    const CODE_METHOD = <<<CODE_METHOD
-    /**
-     * @return %s
-     */
-    public function get%s()
-    {
-        return \$this->%s;
-    }
+    const OUTPUT_PATH = 'src/Entity/Entity/Entity%s.php';
 
     /**
-     * @param %s \$%s
+     * @var array
      */
-    public function set%s(%s\$%s)
-    {
-        \$this->%s = \$%s;
-    }
-CODE_METHOD;
-
     private $properties = [];
 
+    /**
+     * @var array
+     */
     private $methods = [];
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public function generateClass($name)
     {
         return sprintf(
-            self::CODE_CLASS,
-            $this->getClassDocBlock(),
+            $this->getTemplate('Entity/EntityClass'),
             $name,
             implode("\n\n", $this->properties),
             implode("\n\n", $this->methods)
         );
     }
 
+    /**
+     * @param string $property
+     * @param string $type
+     * @param string $arrayItem
+     */
     public function addProperty($property, $type, $arrayItem = null)
     {
-        $type = $type == 'array' ? sprintf('%s[]', $arrayItem) : $type;
-        $this->properties[] = sprintf(self::CODE_PROPERTY, $type, lcfirst($property));
+        $this->properties[] = sprintf(
+            $this->getTemplate('Entity/EntityProperty'),
+            $type == 'array' ? sprintf('%s[]', $arrayItem) : $type,
+            lcfirst($property)
+        );
     }
 
+    /**
+     * @param string $property
+     * @param string $type
+     * @param string $arrayItem
+     */
     public function addMethod($property, $type, $arrayItem = null)
     {
         $propertyLowerCase = lcfirst($property);
         $this->methods[] = sprintf(
-            self::CODE_METHOD,
+            $this->getTemplate('Entity/EntityMethod'),
             $type == 'array' ? sprintf('%s[]', $arrayItem) : $type,
             $property,
             $propertyLowerCase,
@@ -98,8 +80,12 @@ CODE_METHOD;
         );
     }
 
-    protected function getPath()
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getOutputPath($name)
     {
-        return self::PATH;
+        return sprintf(self::OUTPUT_PATH, $name);
     }
 }
