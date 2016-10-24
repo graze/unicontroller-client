@@ -36,24 +36,10 @@ class SerialiserPictureItem extends AbstractSerialiser implements SerialiserInte
         $properties[] = $this->stringEscaper->escape($entity->getPictureName());
         $properties[] = $this->stringEscaper->escape($entity->getPrinterReferenceName());
         $properties[] = $entity->getUsePixelSize();
-        $properties[] = $this->serialisePictureData($entity->getPictureData());
+        $properties[] = $this->binaryDataSerialiser->serialise($entity->getPictureData());
+
         $properties[] = $entity->getStoreInternally();
         $properties[] = $entity->getPhantomField();
-
         return implode(',', $properties);
-    }
-
-    /**
-     * @param string $pictureData
-     *
-     * @return string
-     */
-    private function serialisePictureData($pictureData)
-    {
-        return sprintf(
-            "BinaryData,%d,\r\n%s\r\nBinaryEnd",
-            strlen($pictureData),
-            $pictureData
-        );
     }
 }

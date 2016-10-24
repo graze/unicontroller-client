@@ -15,6 +15,7 @@ namespace Graze\UnicontrollerClient\Serialiser\Serialiser;
 use Graze\UnicontrollerClient\Serialiser\SerialiserResolver;
 use Graze\UnicontrollerClient\StringEscaper;
 use Graze\UnicontrollerClient\Serialiser\ArraySerialiser;
+use Graze\UnicontrollerClient\Serialiser\BinaryDataSerialiser;
 
 abstract class AbstractSerialiser
 {
@@ -29,15 +30,23 @@ abstract class AbstractSerialiser
     protected $arraySerialiser;
 
     /**
+     * @var BinaryDataSerialiser
+     */
+    protected $binaryDataSerialiser;
+
+
+    /**
      * @param StringEscaper $stringEscaper
      * @param ArraySerialiser $arraySerialiser
      */
     public function __construct(
         StringEscaper $stringEscaper,
-        ArraySerialiser $arraySerialiser
+        ArraySerialiser $arraySerialiser,
+        BinaryDataSerialiser $serialiser
     ) {
         $this->stringEscaper = $stringEscaper;
         $this->arraySerialiser = $arraySerialiser;
+        $this->binaryDataSerialiser = $binaryDataSerialiser;
     }
 
     /**
@@ -65,7 +74,8 @@ abstract class AbstractSerialiser
     {
         return new static(
             new StringEscaper(),
-            ArraySerialiser::factory()
+            ArraySerialiser::factory(),
+            new BinaryDataSerialiser()
         );
     }
 }

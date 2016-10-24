@@ -65,6 +65,13 @@ class GeneratorSerialiser extends AbstractGenerator implements GeneratorInterfac
                     $property->getName()
                 );
                 break;
+
+            case DefinitionProperty::PROPERTY_TYPE_BINARY_DATA:
+                $call = sprintf(
+                    $this->getTemplate('Serialiser/SerialiserCallSerialiseBinaryData'),
+                    $property->getName()
+                );
+                break;
         }
 
         $this->callsSerialise[] = $call;

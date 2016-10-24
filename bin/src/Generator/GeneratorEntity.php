@@ -87,6 +87,9 @@ class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
             case DefinitionProperty::PROPERTY_TYPE_ARRAY:
                 return sprintf('%s[]', $property->getArrayElementName());
 
+            case DefinitionProperty::PROPERTY_TYPE_BINARY_DATA:
+                return 'string';
+
             default:
                 return strtolower($property->getType());
         }

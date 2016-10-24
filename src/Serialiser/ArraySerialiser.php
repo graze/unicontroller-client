@@ -12,8 +12,6 @@
  */
 namespace Graze\UnicontrollerClient\Serialiser;
 
-use Graze\UnicontrollerClient\Serialiser\Serialiser\SerialiserInterface;
-
 class ArraySerialiser
 {
     /**

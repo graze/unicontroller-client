@@ -139,7 +139,7 @@ abstract class AbstractParser implements ParserInterface
         }
 
         if ($this->contextPrevious != self::CONTEXT_ARRAY) {
-            // flush the buffer unless we were in an array - this would have been explicitly flushed
+            // flush the buffer unless we were in an array as this would have been explicitly flushed
             $this->flushBuffer();
         }
 

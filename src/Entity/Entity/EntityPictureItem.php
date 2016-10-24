@@ -72,7 +72,7 @@ class EntityPictureItem implements EntityInterface
     protected $usePixelSize;
 
     /**
-     * @var int
+     * @var string
      */
     protected $pictureData;
 
@@ -263,7 +263,7 @@ class EntityPictureItem implements EntityInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getPictureData()
     {
@@ -271,7 +271,7 @@ class EntityPictureItem implements EntityInterface
     }
 
     /**
-     * @param int $pictureData
+     * @param string $pictureData
      */
     public function setPictureData($pictureData)
     {
