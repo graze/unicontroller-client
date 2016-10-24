@@ -14,6 +14,7 @@ namespace Graze\UnicontrollerClient\ClassGenerator\Generator;
 
 use Graze\UnicontrollerClient\ClassGenerator\Generator\AbstractGenerator;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\DefinitionProperty;
 
 class GeneratorSerialiser extends AbstractGenerator implements GeneratorInterface
 {
@@ -38,32 +39,30 @@ class GeneratorSerialiser extends AbstractGenerator implements GeneratorInterfac
     }
 
     /**
-     * @param string $property
-     * @param string $type
-     * @param string $arrayItem
+     * @param DefinitionProperty $property
      */
-    public function addCallSerialise($property, $type, $arrayItem = null)
+    public function addCallSerialise(DefinitionProperty $property)
     {
-        switch ($type) {
-            case 'array':
+        switch ($property->getType()) {
+            case DefinitionProperty::PROPERTY_TYPE_ARRAY:
                 $call = sprintf(
                     $this->getTemplate('Serialiser/SerialiserCallSerialiseArray'),
-                    $property,
-                    $arrayItem
+                    $property->getName(),
+                    $property->getArrayElementName()
                 );
                 break;
 
-            case 'string':
+            case DefinitionProperty::PROPERTY_TYPE_STRING:
                 $call = sprintf(
                     $this->getTemplate('Serialiser/SerialiserCallSerialiseString'),
-                    $property
+                    $property->getName()
                 );
                 break;
 
-            case 'int':
+            case DefinitionProperty::PROPERTY_TYPE_INT:
                 $call = sprintf(
                     $this->getTemplate('Serialiser/SerialiserCallSerialiseInt'),
-                    $property
+                    $property->getName()
                 );
                 break;
         }

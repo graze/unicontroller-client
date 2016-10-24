@@ -14,6 +14,7 @@ namespace Graze\UnicontrollerClient\ClassGenerator\Generator;
 
 use Graze\UnicontrollerClient\ClassGenerator\Generator\AbstractGenerator;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\DefinitionProperty;
 
 class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
 {
@@ -44,40 +45,51 @@ class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param string $property
-     * @param string $type
-     * @param string $arrayItem
+     * @param DefinitionProperty $property
      */
-    public function addProperty($property, $type, $arrayItem = null)
+    public function addProperty(DefinitionProperty $property)
     {
         $this->properties[] = sprintf(
             $this->getTemplate('Entity/EntityProperty'),
-            $type == 'array' ? sprintf('%s[]', $arrayItem) : $type,
-            lcfirst($property)
+            $this->getTypeHint($property),
+            lcfirst($property->getName())
         );
     }
 
     /**
-     * @param string $property
-     * @param string $type
-     * @param string $arrayItem
+     * @param DefinitionProperty $property
      */
-    public function addMethod($property, $type, $arrayItem = null)
+    public function addMethod(DefinitionProperty $property)
     {
-        $propertyLowerCase = lcfirst($property);
+        $propertyLowerCase = lcfirst($property->getName());
         $this->methods[] = sprintf(
             $this->getTemplate('Entity/EntityMethod'),
-            $type == 'array' ? sprintf('%s[]', $arrayItem) : $type,
-            $property,
+            $this->getTypeHint($property),
+            $property->getName(),
             $propertyLowerCase,
-            $type,
+            $this->getTypeHint($property),
             $propertyLowerCase,
-            $property,
-            $type == 'array' ? 'array ' : '',
+            $property->getName(),
+            $property->getType() ==  DefinitionProperty::PROPERTY_TYPE_ARRAY ? 'array ' : '',
             $propertyLowerCase,
             $propertyLowerCase,
             $propertyLowerCase
         );
+    }
+
+    /**
+     * @param DefinitionProperty $property
+     * @return string
+     */
+    private function getTypeHint(DefinitionProperty $property)
+    {
+        switch ($property->getType()) {
+            case DefinitionProperty::PROPERTY_TYPE_ARRAY:
+                return sprintf('%s[]', $property->getArrayElementName());
+
+            default:
+                return strtolower($property->getType());
+        }
     }
 
     /**

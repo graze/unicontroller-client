@@ -3,7 +3,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$cli = new League\CLImate\CLImate();
+use League\CLImate\CLImate;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\DefinitionParser;
+use Graze\UnicontrollerClient\ClassGenerator\ClassGenerator;
+
+$cli = new CLImate();
 try {
     $cli->arguments->add([
         'definition' => [
@@ -19,53 +23,14 @@ try {
     exit;
 }
 
-$definition = $cli->arguments->get('definition');
+$definitionString = $cli->arguments->get('definition');
 
-// remove control characters
-$pattern = [
-    '/\[(SOH|ETB|)\]| /',
-    '/Heigth/' // common typo in documentation
-];
-$replacements = [
-    '',
-    'Height'
-];
+$definitionParser = new DefinitionParser($cli);
+$definition = $definitionParser->parse($definitionString);
 
-$definition = preg_replace($pattern, $replacements, $definition);
 
-// array names do not necessarily match item names contained within the array, confirm item names
-$arrayNameToItemName = [];
-foreach (explode(',', $definition) as $property) {
-    if (strpos($property, 'Array') === false) {
-        continue;
-    }
-
-    $form = str_replace('Array', '', $property);
-    $formItem = sprintf('%sItem', $form);
-    $formVar = sprintf('Var%s', $form);
-    $input = $cli->input(sprintf(
-        'enter item name for %s (1 for %s, 2 for %s, or custom)',
-        $property,
-        $formItem,
-        $formVar
-    ));
-
-    $itemName = $input->prompt();
-    switch ($itemName) {
-        case 1:
-            $itemName = $formItem;
-            break;
-
-        case 2:
-            $itemName = $formVar;
-            break;
-    }
-    $arrayNameToItemName[$property] = $itemName;
-    $cli->out(sprintf('using %s', $itemName));
-}
-
-$classGenerator = Graze\UnicontrollerClient\ClassGenerator\ClassGenerator::factory();
-$classGenerator->generateClasses($definition, $arrayNameToItemName);
+$classGenerator = ClassGenerator::factory();
+$classGenerator->generateClasses($definition);
 
 $files = [];
 $files[] = $classGenerator->getSerialiser();

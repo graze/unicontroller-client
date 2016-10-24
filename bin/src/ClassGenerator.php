@@ -5,6 +5,7 @@ namespace Graze\UnicontrollerClient\ClassGenerator;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorParser;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorEntity;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorSerialiser;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\Definition;
 
 class ClassGenerator
 {
@@ -44,39 +45,17 @@ class ClassGenerator
     }
 
     /**
-     * @param string $definition
-     * @param array $arrayNameToItemName
+     * @param Definition $definition
      */
-    public function generateClasses($definition, array $arrayNameToItemName)
+    public function generateClasses(Definition $definition)
     {
-        // get the definition name
-        $pattern = '/^(?<name>[a-z]+)=/i';
-        $matches = [];
-        preg_match($pattern, $definition, $matches);
+        $this->name = $definition->getName();
 
-        $this->name = $matches['name'];
-
-        // remove definition name
-        $definition = substr($definition, strlen($this->name)+1);
-
-        $properties = explode(',', $definition);
-        foreach ($properties as $property) {
-            // remove escape characters
-            $pattern = '/\[(STX|ETX)\]/';
-            $count = 0;
-            $property = preg_replace($pattern, '', $property, -1, $count);
-
-            $arrayItem = null;
-            $type = $count > 0 ? 'string' : 'int';
-            if (stripos($property, 'array') !== false) {
-                $arrayItem = $arrayNameToItemName[$property];
-                $type = 'array';
-            };
-
+        foreach ($definition->getProperties() as $property) {
             $this->generatorParser->addProperty($property);
-            $this->generatorEntity->addProperty($property, $type, $arrayItem);
-            $this->generatorEntity->addMethod($property, $type, $arrayItem);
-            $this->generatorSerialiser->addCallSerialise($property, $type, $arrayItem);
+            $this->generatorEntity->addProperty($property);
+            $this->generatorEntity->addMethod($property);
+            $this->generatorSerialiser->addCallSerialise($property);
         }
     }
 

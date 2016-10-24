@@ -14,6 +14,7 @@ namespace Graze\UnicontrollerClient\ClassGenerator\Generator;
 
 use Graze\UnicontrollerClient\ClassGenerator\Generator\AbstractGenerator;
 use Graze\UnicontrollerClient\ClassGenerator\Generator\GeneratorInterface;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\DefinitionProperty;
 
 class GeneratorParser extends AbstractGenerator implements GeneratorInterface
 {
@@ -41,11 +42,11 @@ class GeneratorParser extends AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param string $property
+     * @param DefinitionProperty $property
      */
-    public function addProperty($property)
+    public function addProperty(DefinitionProperty $property)
     {
-        $this->properties[] = sprintf("            '%s'", lcfirst($property));
+        $this->properties[] = sprintf("            '%s'", lcfirst($property->getName()));
     }
 
     /**
