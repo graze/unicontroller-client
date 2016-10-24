@@ -26,6 +26,11 @@ class GeneratorParser extends AbstractGenerator implements GeneratorInterface
     private $properties = [];
 
     /**
+     * @var bool
+     */
+    private $isFinalPropertyArray = false;
+
+    /**
      * @param string $name
      * @return string
      */
@@ -37,7 +42,8 @@ class GeneratorParser extends AbstractGenerator implements GeneratorInterface
             $name,
             implode(",\n", $this->properties),
             $name,
-            $name
+            $name,
+            $this->isFinalPropertyArray ? $this->getTemplate('Parser/ParserCallParse') : ''
         );
     }
 
@@ -47,6 +53,7 @@ class GeneratorParser extends AbstractGenerator implements GeneratorInterface
     public function addProperty(DefinitionProperty $property)
     {
         $this->properties[] = sprintf("            '%s'", lcfirst($property->getName()));
+        $this->isFinalPropertyArray = $property->getType() == DefinitionProperty::PROPERTY_TYPE_ARRAY;
     }
 
     /**

@@ -34,5 +34,5 @@ class Parser%s extends AbstractParser implements ParserInterface
     protected function getEntity()
     {
         return new Entity%s();
-    }
+    }%s
 }
