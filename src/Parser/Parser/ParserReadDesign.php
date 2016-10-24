@@ -50,8 +50,16 @@ class ParserReadDesign extends AbstractParser implements ParserInterface
             'macroArray',
             'macroOutputArray',
             'serialVarArray',
-            'settingsArray',
+            'settingsArray'
         ];
+    }
+
+    /**
+     * @return EntityReadDesign
+     */
+    protected function getEntity()
+    {
+        return new EntityReadDesign();
     }
 
     /**
@@ -65,11 +73,4 @@ class ParserReadDesign extends AbstractParser implements ParserInterface
         return parent::parse($string . ', ');
     }
 
-    /**
-     * @return EntityDesign
-     */
-    protected function getEntity()
-    {
-        return new EntityReadDesign();
-    }
 }

@@ -67,87 +67,87 @@ class EntityReadDesign implements EntityInterface
     protected $readOk;
 
     /**
-     * @var LineItem[]
+     * @var EntityLineItem[]
      */
     protected $lineArray = [];
 
     /**
-     * @var BoxItem[]
+     * @var EntityBoxItem[]
      */
     protected $boxArray = [];
 
     /**
-     * @var TtfItem[]
+     * @var EntityTtfItem[]
      */
     protected $ttfArray = [];
 
     /**
-     * @var BarcodeItem[]
+     * @var EntityBarcodeItem[]
      */
     protected $barcodeArray = [];
 
     /**
-     * @var PictureItem[]
+     * @var EntityPictureItem[]
      */
     protected $pictureArray = [];
 
     /**
-     * @var VarPrompt[]
+     * @var EntityVarPrompt[]
      */
     protected $promptArray = [];
 
     /**
-     * @var VarSeq[]
+     * @var EntityVarSeq[]
      */
     protected $seqArray = [];
 
     /**
-     * @var VarRtc[]
+     * @var EntityVarRtc[]
      */
     protected $rtcArray = [];
 
     /**
-     * @var VarDatabase[]
+     * @var EntityVarDatabase[]
      */
     protected $databaseArray = [];
 
     /**
-     * @var VarUserId[]
+     * @var EntityVarUserId[]
      */
     protected $userIdArray = [];
 
     /**
-     * @var VarShiftCode[]
+     * @var EntityVarShiftCode[]
      */
     protected $shiftCodeArray = [];
 
     /**
-     * @var VarMachineId[]
+     * @var EntityVarMachineId[]
      */
     protected $machineIdArray = [];
 
     /**
-     * @var VarDatabaseField[]
+     * @var EntityVarDatabaseField[]
      */
     protected $databaseFieldArray = [];
 
     /**
-     * @var VarMacro[]
+     * @var EntityVarMacro[]
      */
     protected $macroArray = [];
 
     /**
-     * @var VarMacroOutput[]
+     * @var EntityVarMacroOutput[]
      */
     protected $macroOutputArray = [];
 
     /**
-     * @var VarSerial[]
+     * @var EntityVarSerial[]
      */
     protected $serialVarArray = [];
 
     /**
-     * @var SettingsById[]
+     * @var EntitySettingsById[]
      */
     protected $settingsArray = [];
 
@@ -312,7 +312,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return LineItem[]
+     * @return EntityLineItem[]
      */
     public function getLineArray()
     {
@@ -320,7 +320,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $lineArray
+     * @param EntityLineItem[] $lineArray
      */
     public function setLineArray(array $lineArray)
     {
@@ -328,7 +328,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return BoxItem[]
+     * @return EntityBoxItem[]
      */
     public function getBoxArray()
     {
@@ -336,7 +336,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $boxArray
+     * @param EntityBoxItem[] $boxArray
      */
     public function setBoxArray(array $boxArray)
     {
@@ -344,7 +344,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return TtfItem[]
+     * @return EntityTtfItem[]
      */
     public function getTtfArray()
     {
@@ -352,7 +352,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $ttfArray
+     * @param EntityTtfItem[] $ttfArray
      */
     public function setTtfArray(array $ttfArray)
     {
@@ -360,7 +360,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return BarcodeItem[]
+     * @return EntityBarcodeItem[]
      */
     public function getBarcodeArray()
     {
@@ -368,7 +368,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $barcodeArray
+     * @param EntityBarcodeItem[] $barcodeArray
      */
     public function setBarcodeArray(array $barcodeArray)
     {
@@ -376,7 +376,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return PictureItem[]
+     * @return EntityPictureItem[]
      */
     public function getPictureArray()
     {
@@ -384,7 +384,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $pictureArray
+     * @param EntityPictureItem[] $pictureArray
      */
     public function setPictureArray(array $pictureArray)
     {
@@ -392,7 +392,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarPrompt[]
+     * @return EntityVarPrompt[]
      */
     public function getPromptArray()
     {
@@ -400,7 +400,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $promptArray
+     * @param EntityVarPrompt[] $promptArray
      */
     public function setPromptArray(array $promptArray)
     {
@@ -408,7 +408,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarSeq[]
+     * @return EntityVarSeq[]
      */
     public function getSeqArray()
     {
@@ -416,7 +416,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $seqArray
+     * @param EntityVarSeq[] $seqArray
      */
     public function setSeqArray(array $seqArray)
     {
@@ -424,7 +424,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarRtc[]
+     * @return EntityVarRtc[]
      */
     public function getRtcArray()
     {
@@ -432,7 +432,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $rtcArray
+     * @param EntityVarRtc[] $rtcArray
      */
     public function setRtcArray(array $rtcArray)
     {
@@ -440,7 +440,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarDatabase[]
+     * @return EntityVarDatabase[]
      */
     public function getDatabaseArray()
     {
@@ -448,7 +448,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $databaseArray
+     * @param EntityVarDatabase[] $databaseArray
      */
     public function setDatabaseArray(array $databaseArray)
     {
@@ -456,7 +456,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarUserId[]
+     * @return EntityVarUserId[]
      */
     public function getUserIdArray()
     {
@@ -464,7 +464,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $userIdArray
+     * @param EntityVarUserId[] $userIdArray
      */
     public function setUserIdArray(array $userIdArray)
     {
@@ -472,7 +472,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarShiftCode[]
+     * @return EntityVarShiftCode[]
      */
     public function getShiftCodeArray()
     {
@@ -480,7 +480,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $shiftCodeArray
+     * @param EntityVarShiftCode[] $shiftCodeArray
      */
     public function setShiftCodeArray(array $shiftCodeArray)
     {
@@ -488,7 +488,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarMachineId[]
+     * @return EntityVarMachineId[]
      */
     public function getMachineIdArray()
     {
@@ -496,7 +496,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $machineIdArray
+     * @param EntityVarMachineId[] $machineIdArray
      */
     public function setMachineIdArray(array $machineIdArray)
     {
@@ -504,7 +504,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarDatabaseField[]
+     * @return EntityVarDatabaseField[]
      */
     public function getDatabaseFieldArray()
     {
@@ -512,7 +512,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $databaseFieldArray
+     * @param EntityVarDatabaseField[] $databaseFieldArray
      */
     public function setDatabaseFieldArray(array $databaseFieldArray)
     {
@@ -520,7 +520,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarMacro[]
+     * @return EntityVarMacro[]
      */
     public function getMacroArray()
     {
@@ -528,7 +528,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $macroArray
+     * @param EntityVarMacro[] $macroArray
      */
     public function setMacroArray(array $macroArray)
     {
@@ -536,7 +536,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarMacroOutput[]
+     * @return EntityVarMacroOutput[]
      */
     public function getMacroOutputArray()
     {
@@ -544,7 +544,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $macroOutputArray
+     * @param EntityVarMacroOutput[] $macroOutputArray
      */
     public function setMacroOutputArray(array $macroOutputArray)
     {
@@ -552,7 +552,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return VarSerial[]
+     * @return EntityVarSerial[]
      */
     public function getSerialVarArray()
     {
@@ -560,7 +560,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $serialVarArray
+     * @param EntityVarSerial[] $serialVarArray
      */
     public function setSerialVarArray(array $serialVarArray)
     {
@@ -568,7 +568,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @return SettingsById[]
+     * @return EntitySettingsById[]
      */
     public function getSettingsArray()
     {
@@ -576,7 +576,7 @@ class EntityReadDesign implements EntityInterface
     }
 
     /**
-     * @param array $settingsArray
+     * @param EntitySettingsById[] $settingsArray
      */
     public function setSettingsArray(array $settingsArray)
     {

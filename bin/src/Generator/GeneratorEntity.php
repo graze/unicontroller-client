@@ -49,10 +49,14 @@ class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
      */
     public function addProperty(DefinitionProperty $property)
     {
+        $propertyInitialised = lcfirst($property->getName());
+        if ($property->getType() == DefinitionProperty::PROPERTY_TYPE_ARRAY) {
+            $propertyInitialised .= ' = []';
+        }
         $this->properties[] = sprintf(
             $this->getTemplate('Entity/EntityProperty'),
             $this->getTypeHint($property),
-            lcfirst($property->getName())
+            $propertyInitialised
         );
     }
 
@@ -85,7 +89,7 @@ class GeneratorEntity extends AbstractGenerator implements GeneratorInterface
     {
         switch ($property->getType()) {
             case DefinitionProperty::PROPERTY_TYPE_ARRAY:
-                return sprintf('%s[]', $property->getArrayElementName());
+                return sprintf('Entity%s[]', $property->getArrayElementName());
 
             case DefinitionProperty::PROPERTY_TYPE_BINARY_DATA:
                 return 'string';

@@ -26,6 +26,7 @@ class Serialiser%s extends AbstractSerialiser implements SerialiserInterface
     {
         $properties = [];
 %s
+
         return implode(',', $properties);
     }
 }
