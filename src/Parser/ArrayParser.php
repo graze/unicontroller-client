@@ -19,7 +19,7 @@ class ArrayParser
     /**
      * @var ParserResolver
      */
-    protected $parserResolver;
+    private $parserResolver;
 
     /**
      * @param ParserResolver $parserResolver

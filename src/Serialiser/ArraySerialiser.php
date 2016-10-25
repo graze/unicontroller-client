@@ -17,7 +17,7 @@ class ArraySerialiser
     /**
      * @var SerialiserResolver
      */
-    protected $serialiserResolver;
+    private $serialiserResolver;
 
     /**
      * @param SerialiserResolver $serialiserResolver

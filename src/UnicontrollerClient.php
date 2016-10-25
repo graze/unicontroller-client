@@ -24,32 +24,32 @@ class UnicontrollerClient
     /**
      * @var SocketFactory
      */
-    protected $socketFactory;
+    private $socketFactory;
 
     /**
      * @var Serialiser
      */
-    protected $commandSerialiser;
+    private $commandSerialiser;
 
     /**
      * @var ParserResolver
      */
-    protected $parserResolver;
+    private $parserResolver;
 
     /**
      * @var SocketReader
      */
-    protected $socketReader;
+    private $socketReader;
 
     /**
      * @var SerialiserResolver
      */
-    protected $serialiserResolver;
+    private $serialiserResolver;
 
     /**
      * @var \Socket\Raw\Socket
      */
-    protected $socket;
+    private $socket;
 
     /**
      * @param SocketFactory $socketFactory
