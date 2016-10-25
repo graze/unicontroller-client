@@ -15,7 +15,7 @@ namespace Graze\UnicontrollerClient\Parser\Parser;
 use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
 use Graze\UnicontrollerClient\Entity\EntityHydrator;
 use Graze\UnicontrollerClient\Parser\ArrayParser;
-use Graze\UnicontrollerClient\Parser\BinaryParser;
+use Graze\UnicontrollerClient\Parser\BinaryDataParser;
 
 abstract class AbstractParser implements ParserInterface
 {
@@ -37,9 +37,9 @@ abstract class AbstractParser implements ParserInterface
     private $arrayParser;
 
     /**
-     * @var BinaryParser
+     * @var BinaryDataParser
      */
-    private $binaryParser;
+    private $binaryDataParser;
 
     /**
      * @var []
@@ -106,13 +106,13 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @param EntityHydrator $entityHydrator
      * @param ArrayParser $arrayParser
-     * @param BinaryParser $binaryParser
+     * @param BinaryDataParser $binaryDataParser
      */
-    public function __construct(EntityHydrator $entityHydrator, ArrayParser $arrayParser, BinaryParser $binaryParser)
+    public function __construct(EntityHydrator $entityHydrator, ArrayParser $arrayParser, BinaryDataParser $binaryDataParser)
     {
         $this->entityHydrator = $entityHydrator;
         $this->arrayParser = $arrayParser;
-        $this->binaryParser = $binaryParser;
+        $this->binaryDataParser = $binaryDataParser;
     }
 
     /**
@@ -200,7 +200,7 @@ abstract class AbstractParser implements ParserInterface
                     break;
                 }
 
-                $propertyValue = $this->binaryParser->parse($this->buffer);
+                $propertyValue = $this->binaryDataParser->parse($this->buffer);
                 break;
 
             default:
@@ -229,7 +229,7 @@ abstract class AbstractParser implements ParserInterface
         return new static(
             new EntityHydrator(),
             ArrayParser::factory(),
-            new BinaryParser()
+            new BinaryDataParser()
         );
     }
 }

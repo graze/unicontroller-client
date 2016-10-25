@@ -14,7 +14,7 @@ namespace Graze\UnicontrollerClient\Parser;
 
 use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
 
-class BinaryParser
+class BinaryDataParser
 {
     /**
      * @param string $string

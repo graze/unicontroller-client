@@ -34,15 +34,15 @@ abstract class AbstractSerialiser
      */
     protected $binaryDataSerialiser;
 
-
     /**
      * @param StringEscaper $stringEscaper
      * @param ArraySerialiser $arraySerialiser
+     * @param BinaryDataSerialiser $binaryDataSerialiser
      */
     public function __construct(
         StringEscaper $stringEscaper,
         ArraySerialiser $arraySerialiser,
-        BinaryDataSerialiser $serialiser
+        BinaryDataSerialiser $binaryDataSerialiser
     ) {
         $this->stringEscaper = $stringEscaper;
         $this->arraySerialiser = $arraySerialiser;
