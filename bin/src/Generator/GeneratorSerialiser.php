@@ -21,7 +21,7 @@ class GeneratorSerialiser extends AbstractGenerator implements GeneratorInterfac
     const OUTPUT_PATH = 'src/Serialiser/Serialiser/Serialiser%s.php';
 
     /**
-     * @var string
+     * @var array
      */
     private $callsSerialise = [];
 

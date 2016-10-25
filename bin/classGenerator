@@ -1,6 +1,16 @@
 #!/usr/bin/php
 <?php
-
+/**
+ * This file is part of graze/unicontroller-client.
+ *
+ * Copyright (c) 2016 Nature Delivered Ltd. <https://www.graze.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license https://github.com/graze/unicontroller-client/blob/master/LICENSE.md
+ * @link https://github.com/graze/unicontroller-client
+ */
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use League\CLImate\CLImate;
@@ -27,7 +37,6 @@ $definitionString = $cli->arguments->get('definition');
 
 $definitionParser = new DefinitionParser($cli);
 $definition = $definitionParser->parse($definitionString);
-
 
 $classGenerator = ClassGenerator::factory();
 $classGenerator->generateClasses($definition);
