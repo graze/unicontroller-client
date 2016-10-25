@@ -12,8 +12,22 @@
  */
 namespace Graze\UnicontrollerClient;
 
+use Graze\UnicontrollerClient\StringEscaper;
+
 class CommandSerialiser
 {
+    /**
+     * @var StringEscaper
+     */
+    private $stringEscaper;
+
+    /**
+     * @param StringEscaper $stringEscaper
+     */
+    public function __construct(StringEscaper $stringEscaper)
+    {
+        $this->stringEscaper = $stringEscaper;
+    }
     /**
      * @param string $command
      * @param string $argumentsSerialised
@@ -39,10 +53,20 @@ class CommandSerialiser
         // escape strings
         array_walk($arguments, function (&$value) {
             if (!is_numeric($value)) {
-                $value = sprintf('%s%s%s', "\x02", $value, "\x03");
+                $value = $this->stringEscaper->escape($value);
             }
         });
 
         return implode(',', $arguments);
+    }
+
+    /**
+     * @return CommandSerialiser
+     */
+    public static function factory()
+    {
+        return new static(
+            new StringEscaper()
+        );
     }
 }
