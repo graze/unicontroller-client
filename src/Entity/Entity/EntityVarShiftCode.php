@@ -22,7 +22,7 @@ class EntityVarShiftCode implements EntityInterface
     protected $name;
 
     /**
-     * @var ShiftDefinition[]
+     * @var EntityShiftDefinition[]
      */
     protected $shiftArray;
 
@@ -53,7 +53,7 @@ class EntityVarShiftCode implements EntityInterface
     }
 
     /**
-     * @return ShiftDefinition[]
+     * @return EntityShiftDefinition[]
      */
     public function getShiftArray()
     {
