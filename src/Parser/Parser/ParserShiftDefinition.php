@@ -31,8 +31,8 @@ class ParserShiftDefinition extends AbstractParser implements ParserInterface
             'toHour',
             'toMinutte',
             'shiftText',
-            'fromDay',
-            'toDay',
+            'fromDay2',
+            'toDay2',
             'from',
             'to'
         ];

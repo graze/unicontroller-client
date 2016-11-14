@@ -32,8 +32,8 @@ class SerialiserShiftDefinition extends AbstractSerialiser implements Serialiser
         $properties[] = $entity->getToHour();
         $properties[] = $entity->getToMinutte();
         $properties[] = $this->stringEscaper->escape($entity->getShiftText());
-        $properties[] = $entity->getFromDay();
-        $properties[] = $entity->getToDay();
+        $properties[] = $entity->getFromDay2();
+        $properties[] = $entity->getToDay2();
         $properties[] = $this->stringEscaper->escape($entity->getFrom());
         $properties[] = $this->stringEscaper->escape($entity->getTo());
 

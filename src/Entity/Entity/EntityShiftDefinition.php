@@ -54,12 +54,12 @@ class EntityShiftDefinition implements EntityInterface
     /**
      * @var int
      */
-    protected $fromDay;
+    protected $fromDay2;
 
     /**
      * @var int
      */
-    protected $toDay;
+    protected $toDay2;
 
     /**
      * @var string
@@ -186,33 +186,33 @@ class EntityShiftDefinition implements EntityInterface
     /**
      * @return int
      */
-    public function getFromDay()
+    public function getFromDay2()
     {
-        return $this->fromDay;
+        return $this->fromDay2;
     }
 
     /**
-     * @param int $fromDay
+     * @param int $fromDay2
      */
-    public function setFromDay($fromDay)
+    public function setFromDay2($fromDay2)
     {
-        $this->fromDay = $fromDay;
+        $this->fromDay2 = $fromDay2;
     }
 
     /**
      * @return int
      */
-    public function getToDay()
+    public function getToDay2()
     {
         return $this->toDay;
     }
 
     /**
-     * @param int $toDay
+     * @param int $toDay2
      */
-    public function setToDay($toDay)
+    public function setToDay2($toDay2)
     {
-        $this->toDay = $toDay;
+        $this->toDay2 = $toDay2;
     }
 
     /**
