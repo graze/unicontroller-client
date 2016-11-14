@@ -27,7 +27,7 @@ class ParserBarcodeItem extends AbstractParser implements ParserInterface
             'anchorPoint',
             'xPos',
             'yPos',
-            'heigth',
+            'height',
             'orion',
             'description',
             'narrow',
