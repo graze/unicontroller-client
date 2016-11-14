@@ -20,6 +20,6 @@ class StringEscaper
      */
     public function escape($string)
     {
-        return sprintf('%s%s%s', "\x02", $string, "\x03");
+        return sprintf("\x02%s\x03", $string);
     }
 }

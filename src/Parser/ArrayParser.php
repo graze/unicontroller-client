@@ -12,6 +12,7 @@
  */
 namespace Graze\UnicontrollerClient\Parser;
 
+use Graze\UnicontrollerClient\Parser\ParserResolver;
 use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
 
 class ArrayParser

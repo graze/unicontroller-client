@@ -36,11 +36,9 @@ class CommandSerialiser
     public function serialiseCommand($command, $argumentsSerialised)
     {
         return sprintf(
-            "%s%s=%s%s\r\n",
-            "\x01",
+            "\x01%s=%s\x17\r\n",
             $command,
-            $argumentsSerialised,
-            "\x17"
+            $argumentsSerialised
         );
     }
 
