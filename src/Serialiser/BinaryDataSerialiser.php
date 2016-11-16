@@ -22,7 +22,7 @@ class BinaryDataSerialiser
     {
         return sprintf(
             "BinaryData,%d,\r\n%s\r\nBinaryEnd",
-            strlen($binaryData),
+            strlen($binaryData), // this is returning the number of bytes, but I think they want chars.
             $binaryData
         );
     }

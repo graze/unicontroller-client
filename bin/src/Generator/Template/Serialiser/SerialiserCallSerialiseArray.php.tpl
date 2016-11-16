@@ -1,1 +1,1 @@
-        $properties[] = $this->serialiseArray($entity->get%s(), '%s');
+        $properties[] = $this->arraySerialiser->serialise($entity->get%s(), '%s');

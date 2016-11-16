@@ -31,9 +31,25 @@ class ArraySerialiser
 
     /**
      * @param array $entities
+     * @param string $itemName
      * @return string
      */
-    public function serialise(array $entities)
+    public function serialise(array $entities, $itemName)
+    {
+        $entitiesSerialised = $this->serialiseEntities($entities);
+        return sprintf(
+            "\x02%s\x03,%d,\r\n%s",
+            $itemName,
+            count($entities),
+            $entitiesSerialised
+        );
+    }
+
+    /**
+     * @param array $entities
+     * @return string
+     */
+    private function serialiseEntities(array $entities)
     {
         if (count($entities) == 0) {
             return '';

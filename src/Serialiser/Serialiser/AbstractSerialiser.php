@@ -50,24 +50,6 @@ abstract class AbstractSerialiser
     }
 
     /**
-     * @param array $entities
-     * @param string $itemName
-     * @return string
-     */
-    protected function serialiseArray(array $entities, $itemName)
-    {
-        $arrayData = $this->arraySerialiser->serialise($entities);
-        return sprintf(
-            "%s%s%s,%d,\r\n%s",
-            "\x02",
-            $itemName,
-            "\x03",
-            count($entities),
-            $arrayData
-        );
-    }
-
-    /**
      * @return AbstractParser
      */
     public static function factory()

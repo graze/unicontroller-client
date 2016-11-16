@@ -39,7 +39,10 @@ class ArraySerialiserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $arraySerialiser = new ArraySerialiser($serialiserResolver);
 
-        $arraySerialised = $arraySerialiser->serialise([$entity, $entity, $entity]);
-        $this->assertEquals("\tserialised\r\n\tserialised\r\n\tserialised\r\n", $arraySerialised);
+        $arraySerialised = $arraySerialiser->serialise([$entity, $entity, $entity], 'ItemName');
+        $this->assertEquals(
+            "\x02ItemName\x03,3,\r\n\tserialised\r\n\tserialised\r\n\tserialised\r\n",
+            $arraySerialised
+        );
     }
 }

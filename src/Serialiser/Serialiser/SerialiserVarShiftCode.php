@@ -26,7 +26,7 @@ class SerialiserVarShiftCode extends AbstractSerialiser implements SerialiserInt
     {
         $properties = [];
         $properties[] = $this->stringEscaper->escape($entity->getName());
-        $properties[] = $this->serialiseArray($entity->getShiftArray(), 'ShiftDefinition');
+        $properties[] = $this->arraySerialiser->serialise($entity->getShiftArray(), 'ShiftDefinition');
         $properties[] = $entity->getcPadding();
         $properties[] = $entity->getLength();
 
