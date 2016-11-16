@@ -1,0 +1,35 @@
+dog,2,3,1,2,3,1,2,3,1,LineItem,1,
+	2,3,1,2,3,1,hamster,2
+,BoxItem,1,
+	3,1,2,3,1,2,cat,3,1,2
+,TtfItem,1,
+	3,1,2,3,1,2,dog,hamster,3,1,2,3,1,2,cat,3,1,2,3,1,2
+,BarcodeItem,1,
+	3,1,2,3,1,dog,2,3,1,hamster,2,3,1,2,cat,3,1,2,3,1,2,3,1,2,3
+,PictureItem,1,
+	1,2,3,1,2,3,dog,1,hamster,cat,2,BinaryData,3,
+dog
+BinaryEnd,3,1
+,VarPrompt,1,
+	hamster,cat,2,3,1,2,dog
+,VarSeq,1,
+	hamster,cat,3,1,2,3,1,2,3,1,2,3,1,2
+,VarRtc,1,
+	dog,hamster,3,1,2,3,1,2,cat,3,1,2,3,dog,1,2
+,VarDatabase,1,
+	hamster,cat,dog,hamster,cat,dog,hamster,3,1,2,3,1,2,cat,dog,hamster,3,1,2,3,1,2
+,VarUserId,1,
+	cat
+,VarShiftCode,0,
+,VarMachineId,1,
+	dog
+,VarDatabaseField,1,
+	hamster,cat,dog,2,3,1,2,3
+,VarMacro,1,
+	hamster,cat,1,2,3,1
+,VarMacroOutput,1,
+	dog,2,3
+,VarSerial,1,
+	hamster,1,2,cat,3,dog,1,2
+,SettingsById,1,
+	3,1,2
