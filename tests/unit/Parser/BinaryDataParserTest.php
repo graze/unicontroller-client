@@ -12,12 +12,17 @@
  * @link https://github.com/graze/unicontroller-client
  */
 
-namespace Graze\UniController\Test\Unit;
+namespace Graze\UniControllerClient\Test\Unit;
 
-class ExampleUnitTest extends \PHPUnit_Framework_TestCase
+use Mockery as m;
+use Graze\UnicontrollerClient\Parser\BinaryDataParser;
+
+class BinaryDataParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTrueIsTrue()
+    public function testParse()
     {
-        static::assertTrue(true);
+        $parser = new BinaryDataParser();
+        $binaryData = $parser->parse("BinaryData,19,\r\nthis is binary data\r\nBinaryEnd");
+        $this->assertEquals('this is binary data', $binaryData);
     }
 }
