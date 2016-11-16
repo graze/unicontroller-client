@@ -2,9 +2,9 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/graze/unicontroller-client.svg?style=flat-square)](https://packagist.org/packages/graze/unicontroller-client)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/graze/unicontroller-client/master.svg?style=flat-square)](https://travis-ci.org/graze/unicontroller-client)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/graze/unicontroller-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/unicontroller-client/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/graze/unicontroller-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/unicontroller-client)
+[![Build Status](https://travis-ci.org/graze/unicontroller-client.svg?branch=master)](https://travis-ci.org/graze/unicontroller-client)
+[![Code Coverage](https://scrutinizer-ci.com/g/graze/unicontroller-client/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/graze/unicontroller-client/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/graze/unicontroller-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/graze/unicontroller-client/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/graze/unicontroller-client.svg?style=flat-square)](https://packagist.org/packages/graze/unicontroller-client)
 
 A Domino Unicontroller client written in PHP.
