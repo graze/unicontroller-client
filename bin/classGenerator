@@ -1,0 +1,69 @@
+#!/usr/bin/php
+<?php
+/**
+ * This file is part of graze/unicontroller-client.
+ *
+ * Copyright (c) 2016 Nature Delivered Ltd. <https://www.graze.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license https://github.com/graze/unicontroller-client/blob/master/LICENSE.md
+ * @link https://github.com/graze/unicontroller-client
+ */
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use League\CLImate\CLImate;
+use Graze\UnicontrollerClient\ClassGenerator\Definition\DefinitionParser;
+use Graze\UnicontrollerClient\ClassGenerator\ClassGenerator;
+
+$cli = new CLImate();
+try {
+    $cli->arguments->add([
+        'definition' => [
+            'prefix'      => 'd',
+            'longPrefix'  => 'definition',
+            'description' => 'The item\'s definition as taken from the docs, e.g. \'[SOH]BoxItem=AnchorPoint,XPos,YPos,Width,Height,Orion,[STX]Description[ETX],Thickness,Arc,PhantomField[ETB]\'',
+            'required'    => true,
+        ]
+    ]);
+    $cli->arguments->parse();
+} catch (\Exception $e) {
+    $cli->usage();
+    exit;
+}
+
+$definitionString = $cli->arguments->get('definition');
+
+$definitionParser = new DefinitionParser($cli);
+$definition = $definitionParser->parse($definitionString);
+
+$classGenerator = ClassGenerator::factory();
+$classGenerator->generateClasses($definition);
+
+$files = [];
+$files[] = $classGenerator->getSerialiser();
+$files[] = $classGenerator->getEntity();
+$files[] = $classGenerator->getParser();
+
+foreach ($files as $file) {
+    list($path, $contents) = $file;
+
+    $cli->out(sprintf('writing %s', $path));
+
+    $pathRelative = sprintf('%s/../%s', __DIR__, $path);
+    $writeFile = true;
+    if (file_exists($pathRelative)) {
+        $writeFile = $cli->confirm('file exists, overwrite?')->confirmed();
+    }
+
+    if (!$writeFile) {
+        $cli->out('file skipped');
+        continue;
+    }
+
+    file_put_contents($pathRelative, $contents);
+    $cli->out('file written');
+}
+
+$cli->out('all done');

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of graze/unicontroller-client.
  *
@@ -11,13 +10,20 @@
  * @license https://github.com/graze/unicontroller-client/blob/master/LICENSE.md
  * @link https://github.com/graze/unicontroller-client
  */
+namespace Graze\UnicontrollerClient\Parser;
 
-namespace Graze\UniController\Test\Unit;
+use Graze\UnicontrollerClient\Parser\Parser\ParserInterface;
 
-class ExampleUnitTest extends \PHPUnit_Framework_TestCase
+class BinaryDataParser
 {
-    public function testTrueIsTrue()
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function parse($string)
     {
-        static::assertTrue(true);
+        list(, $length, $binaryData) = explode(',', $string, 3);
+        $binaryData = substr($binaryData, 0, -10); // remove 'BinaryEnd,'
+        return trim($binaryData, "\r\n");
     }
 }

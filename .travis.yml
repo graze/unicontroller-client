@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 5.5
   - 5.6
   - 7.0
   - hhvm
@@ -20,4 +19,4 @@ script:
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --access-token=":scrutinizer-access-token" --format=php-clover ./tests/report/coverage.clover
+  - php ocular.phar code-coverage:upload --format=php-clover ./tests/report/coverage.clover

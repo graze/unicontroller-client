@@ -1,0 +1,1 @@
+        $properties[] = $this->stringEscaper->escape($entity->get%s());
