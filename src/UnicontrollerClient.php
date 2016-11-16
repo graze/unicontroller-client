@@ -123,7 +123,7 @@ class UnicontrollerClient
     {
         return new static(
             new SocketFactory(),
-            new CommandSerialiser(),
+            CommandSerialiser::factory(),
             new ParserResolver(),
             new SocketReader(),
             new SerialiserResolver()

@@ -44,47 +44,48 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @var []
      */
-    private $contextCurrentToTokenToContextNew = [
-        self::CONTEXT_NONE => [
-            '=' => self::CONTEXT_ANSWER,
-            ',' => self::CONTEXT_FLUSH,
-            "\x02" => self::CONTEXT_STRING,
-            'BinaryData' => self::CONTEXT_BINARY,
-        ],
-        self::CONTEXT_STRING => [
-            "\x03" => self::CONTEXT_NONE,
-            "\x02LineItem\x03" => self::CONTEXT_ARRAY,
-            "\x02BoxItem\x03" => self::CONTEXT_ARRAY,
-            "\x02TtfItem\x03" => self::CONTEXT_ARRAY,
-            "\x02BarcodeItem\x03" => self::CONTEXT_ARRAY,
-            "\x02PictureItem\x03" => self::CONTEXT_ARRAY,
-            "\x02VarPrompt\x03" => self::CONTEXT_ARRAY,
-            "\x02VarSeq\x03" => self::CONTEXT_ARRAY,
-            "\x02VarRtc\x03" => self::CONTEXT_ARRAY,
-            "\x02VarDatabase\x03" => self::CONTEXT_ARRAY,
-            "\x02VarUserId\x03" => self::CONTEXT_ARRAY,
-            "\x02VarShiftCode\x03" => self::CONTEXT_ARRAY,
-            "\x02VarMachineId\x03" => self::CONTEXT_ARRAY,
-            "\x02VarDatabaseField\x03" => self::CONTEXT_ARRAY,
-            "\x02VarMacro\x03" => self::CONTEXT_ARRAY,
-            "\x02VarMacroOutput\x03" => self::CONTEXT_ARRAY,
-            "\x02VarSerial\x03" => self::CONTEXT_ARRAY,
-            "\x02SettingsById\x03" => self::CONTEXT_ARRAY,
-        ],
-        self::CONTEXT_ARRAY => [
-            "\x02" => self::CONTEXT_STRING,
-            'BinaryData' => self::CONTEXT_BINARY,
-            "\r\n," => self::CONTEXT_NONE,
-        ],
-        self::CONTEXT_BINARY => [
-            'BinaryEnd' => self::CONTEXT_NONE,
-        ],
-    ];
+     private $contextCurrentToTokensToContextNew = [
+         self::CONTEXT_NONE => [
+             ',' => self::CONTEXT_FLUSH,
+              '=' => self::CONTEXT_ANSWER,
+             "\x02" => self::CONTEXT_STRING,
+             'BinaryData' => self::CONTEXT_BINARY,
+             "\x02LineItem\x03" => self::CONTEXT_ARRAY,
+             "\x02BoxItem\x03" => self::CONTEXT_ARRAY,
+             "\x02TtfItem\x03" => self::CONTEXT_ARRAY,
+             "\x02BarcodeItem\x03" => self::CONTEXT_ARRAY,
+             "\x02PictureItem\x03" => self::CONTEXT_ARRAY,
+             "\x02VarPrompt\x03" => self::CONTEXT_ARRAY,
+             "\x02VarSeq\x03" => self::CONTEXT_ARRAY,
+             "\x02VarRtc\x03" => self::CONTEXT_ARRAY,
+             "\x02VarDatabase\x03" => self::CONTEXT_ARRAY,
+             "\x02VarUserId\x03" => self::CONTEXT_ARRAY,
+             "\x02VarShiftCode\x03" => self::CONTEXT_ARRAY,
+             "\x02VarMachineId\x03" => self::CONTEXT_ARRAY,
+             "\x02VarDatabaseField\x03" => self::CONTEXT_ARRAY,
+             "\x02VarMacro\x03" => self::CONTEXT_ARRAY,
+             "\x02VarMacroOutput\x03" => self::CONTEXT_ARRAY,
+             "\x02VarSerial\x03" => self::CONTEXT_ARRAY,
+             "\x02SettingsById\x03" => self::CONTEXT_ARRAY,
+             "\x02ShiftDefinition\x03" => self::CONTEXT_ARRAY,
+         ],
+         self::CONTEXT_STRING => [
+             "\x03" => self::CONTEXT_NONE,
+         ],
+         self::CONTEXT_ARRAY => [
+             "\x02" => self::CONTEXT_STRING,
+             "\r\n" => self::CONTEXT_NONE,
+             'BinaryData' => self::CONTEXT_BINARY,
+         ],
+         self::CONTEXT_BINARY => [
+             'BinaryEnd' => self::CONTEXT_NONE,
+         ]
+     ];
 
     /**
      * @var []
      */
-    private $context = [
+    private $contextStack = [
         self::CONTEXT_NONE
     ];
 
@@ -97,6 +98,26 @@ abstract class AbstractParser implements ParserInterface
      * @var string
      */
     private $buffer = '';
+
+    /**
+     * @var bool
+     */
+    private $arrayInitialised = false;
+
+    /**
+     * @var string
+     */
+     private $arrayName;
+
+    /**
+     * @var int
+     */
+    private $arrayLength;
+
+    /**
+     * @var int
+     */
+    private $arrayItemCount;
 
     /**
      * @var []
@@ -122,26 +143,28 @@ abstract class AbstractParser implements ParserInterface
     public function parse($string)
     {
         for ($pointer = 0; $pointer < strlen($string); $pointer++) {
-            $character = $string[$pointer];
+            $this->buffer .= $string[$pointer];
 
-            $tokenToContextNew = $this->contextCurrentToTokenToContextNew[$this->getContext()];
-            foreach ($tokenToContextNew as $token => $contextNew) {
-                $tokenLength = strlen($token);
-                $subject = substr($this->buffer, $tokenLength * -1);
-                if ($subject != $token) {
-                    continue;
+            while (true) {
+                $contextNext = $this->getContextFromToken($this->buffer);
+                if (!$contextNext) {
+                    // nothing found in the string, move to next character
+                    break;
                 }
 
-                $this->changeContext($contextNew);
+                // we found a token, attempt to change context
+                $contextChanged = $this->changeContext($contextNext);
+                if (!$contextChanged) {
+                    // no change, move to next character
+                    break;
+                };
+
+                // context has changed, repeat this loop in the new context
             }
-
-            $this->buffer .= $character;
         }
 
-        if ($this->contextPrevious != self::CONTEXT_ARRAY) {
-            // flush the buffer unless we were in an array as this would have been explicitly flushed
-            $this->flushBuffer();
-        }
+        // final flush
+        $this->flushBuffer();
 
         $data = array_combine($this->getProperties(), $this->propertyValues);
         $this->propertyValues = [];
@@ -150,53 +173,85 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * @param string $string
+     * @return string|bool
+     */
+    private function getContextFromToken($string)
+    {
+        $tokensToContextNew = $this->contextCurrentToTokensToContextNew[$this->getContextCurrent()];
+        foreach ($tokensToContextNew as $token => $contextNew) {
+            $offset = strlen($token) * -1;
+            $subject = substr($string, $offset);
+
+            if ($subject != $token) {
+                continue;
+            }
+
+            return $contextNew;
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
-    private function getContext()
+    private function getContextCurrent()
     {
-        return end($this->context);
+        return end($this->contextStack);
     }
 
     /**
      * @param string $context
+     * @return bool
      */
     private function changeContext($context)
     {
         if ($context == self::CONTEXT_ANSWER) {
             $this->buffer = ''; // remove 'answerName='
-            return;
+            return false;
         }
 
         if ($context == self::CONTEXT_FLUSH) {
             $this->flushBuffer();
             $this->contextPrevious = self::CONTEXT_NONE;
-            return;
+            return false;
         }
 
         if ($context != self::CONTEXT_NONE) {
             // enter new context
-            $this->context[] = $context;
-            return;
+            $this->contextStack[] = $context;
+            return true;
+        }
+
+        if ($this->getContextCurrent() == self::CONTEXT_ARRAY) {
+            if (!$this->arrayInitialised) {
+                // array not yet initialised
+                $this->arrayInit();
+            }
+
+            if ($this->arrayItemCount > 0) {
+                $this->arrayItemCount--;
+                // not enough items, do not leave context yet
+                return false;
+            }
         }
 
         // exit current context
-        $this->contextPrevious = array_pop($this->context);
-
-        // have to manually flush buffer for this transition as comma is part of exit token
-        if ($this->contextPrevious == self::CONTEXT_ARRAY) {
-            $this->flushBuffer();
-        }
+        $this->contextPrevious = array_pop($this->contextStack);
+        return true;
     }
 
     private function flushBuffer()
     {
         switch ($this->contextPrevious) {
             case self::CONTEXT_ARRAY:
-                $propertyValue = $this->arrayParser->parse($this->buffer);
+                $propertyValue = $this->arrayParser->parse($this->arrayName, $this->arrayLength, $this->buffer);
+                $this->arrayClear();
                 break;
 
             case self::CONTEXT_BINARY:
-                if ($this->getContext() != self::CONTEXT_NONE) {
+                if ($this->getContextCurrent() != self::CONTEXT_NONE) {
                     break;
                 }
 
@@ -209,6 +264,26 @@ abstract class AbstractParser implements ParserInterface
 
         $this->propertyValues[] = $propertyValue;
         $this->buffer = '';
+    }
+
+    private function arrayInit()
+    {
+        list($name, $length) = explode(',', $this->buffer, 2);
+
+        $this->arrayName = trim($name, "\x02\x03");
+        $this->arrayLength = trim($length, ",\r\n");
+        $this->arrayItemCount = $this->arrayLength;
+        $this->arrayInitialised = true;
+
+        $this->buffer = '';
+    }
+
+    private function arrayClear()
+    {
+        $this->arrayName = null;
+        $this->arrayLength = 0;
+        $this->arrayItemCount = 0;
+        $this->arrayInitialised = null;
     }
 
     /**
