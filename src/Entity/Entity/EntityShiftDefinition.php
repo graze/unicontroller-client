@@ -204,7 +204,7 @@ class EntityShiftDefinition implements EntityInterface
      */
     public function getToDay2()
     {
-        return $this->toDay;
+        return $this->toDay2;
     }
 
     /**
