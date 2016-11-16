@@ -44,43 +44,43 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @var []
      */
-     private $contextCurrentToTokensToContextNew = [
-         self::CONTEXT_NONE => [
-             ',' => self::CONTEXT_FLUSH,
-              '=' => self::CONTEXT_ANSWER,
-             "\x02" => self::CONTEXT_STRING,
-             'BinaryData' => self::CONTEXT_BINARY,
-             "\x02LineItem\x03" => self::CONTEXT_ARRAY,
-             "\x02BoxItem\x03" => self::CONTEXT_ARRAY,
-             "\x02TtfItem\x03" => self::CONTEXT_ARRAY,
-             "\x02BarcodeItem\x03" => self::CONTEXT_ARRAY,
-             "\x02PictureItem\x03" => self::CONTEXT_ARRAY,
-             "\x02VarPrompt\x03" => self::CONTEXT_ARRAY,
-             "\x02VarSeq\x03" => self::CONTEXT_ARRAY,
-             "\x02VarRtc\x03" => self::CONTEXT_ARRAY,
-             "\x02VarDatabase\x03" => self::CONTEXT_ARRAY,
-             "\x02VarUserId\x03" => self::CONTEXT_ARRAY,
-             "\x02VarShiftCode\x03" => self::CONTEXT_ARRAY,
-             "\x02VarMachineId\x03" => self::CONTEXT_ARRAY,
-             "\x02VarDatabaseField\x03" => self::CONTEXT_ARRAY,
-             "\x02VarMacro\x03" => self::CONTEXT_ARRAY,
-             "\x02VarMacroOutput\x03" => self::CONTEXT_ARRAY,
-             "\x02VarSerial\x03" => self::CONTEXT_ARRAY,
-             "\x02SettingsById\x03" => self::CONTEXT_ARRAY,
-             "\x02ShiftDefinition\x03" => self::CONTEXT_ARRAY,
-         ],
-         self::CONTEXT_STRING => [
-             "\x03" => self::CONTEXT_NONE,
-         ],
-         self::CONTEXT_ARRAY => [
-             "\x02" => self::CONTEXT_STRING,
-             "\r\n" => self::CONTEXT_NONE,
-             'BinaryData' => self::CONTEXT_BINARY,
-         ],
-         self::CONTEXT_BINARY => [
-             'BinaryEnd' => self::CONTEXT_NONE,
-         ]
-     ];
+    private $contextCurrentToTokensToContextNew = [
+        self::CONTEXT_NONE => [
+            ',' => self::CONTEXT_FLUSH,
+            '=' => self::CONTEXT_ANSWER,
+            "\x02" => self::CONTEXT_STRING,
+            'BinaryData' => self::CONTEXT_BINARY,
+            "\x02LineItem\x03" => self::CONTEXT_ARRAY,
+            "\x02BoxItem\x03" => self::CONTEXT_ARRAY,
+            "\x02TtfItem\x03" => self::CONTEXT_ARRAY,
+            "\x02BarcodeItem\x03" => self::CONTEXT_ARRAY,
+            "\x02PictureItem\x03" => self::CONTEXT_ARRAY,
+            "\x02VarPrompt\x03" => self::CONTEXT_ARRAY,
+            "\x02VarSeq\x03" => self::CONTEXT_ARRAY,
+            "\x02VarRtc\x03" => self::CONTEXT_ARRAY,
+            "\x02VarDatabase\x03" => self::CONTEXT_ARRAY,
+            "\x02VarUserId\x03" => self::CONTEXT_ARRAY,
+            "\x02VarShiftCode\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMachineId\x03" => self::CONTEXT_ARRAY,
+            "\x02VarDatabaseField\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMacro\x03" => self::CONTEXT_ARRAY,
+            "\x02VarMacroOutput\x03" => self::CONTEXT_ARRAY,
+            "\x02VarSerial\x03" => self::CONTEXT_ARRAY,
+            "\x02SettingsById\x03" => self::CONTEXT_ARRAY,
+            "\x02ShiftDefinition\x03" => self::CONTEXT_ARRAY,
+        ],
+        self::CONTEXT_STRING => [
+            "\x03" => self::CONTEXT_NONE,
+        ],
+        self::CONTEXT_ARRAY => [
+            "\x02" => self::CONTEXT_STRING,
+            "\r\n" => self::CONTEXT_NONE,
+            'BinaryData' => self::CONTEXT_BINARY,
+        ],
+        self::CONTEXT_BINARY => [
+            'BinaryEnd' => self::CONTEXT_NONE,
+        ]
+    ];
 
     /**
      * @var []
@@ -107,7 +107,7 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @var string
      */
-     private $arrayName;
+    private $arrayName;
 
     /**
      * @var int

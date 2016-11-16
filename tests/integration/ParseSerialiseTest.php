@@ -42,6 +42,9 @@ class ParseSerialiseTest extends \PHPUnit_Framework_TestCase
         return $this->unicontrollerClient;
     }
 
+    /**
+     * @return ParserResolver
+     */
     private function getParserResolver()
     {
         if (!$this->parserResolver) {
@@ -53,8 +56,7 @@ class ParseSerialiseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider dataProviderTestParseSerialise
-     *
-     * @param string $fixtureFilename
+     * @param string $name
      */
     public function testParseSerialise($name)
     {
