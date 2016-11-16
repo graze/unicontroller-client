@@ -24,22 +24,29 @@ class ArrayParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testParse()
     {
+        $arrayName = 'ArrayName';
+        $arrayLength = 3;
         $entity = m::mock(EntityInterface::class);
         $entityParser = m::mock(ParserInterface::class)
             ->shouldReceive('parse')
             ->with('serialised')
             ->andReturn($entity)
-            ->times(3)
+            ->times($arrayLength)
             ->getMock();
         $parserResolver = m::mock(ParserResolver::class)
             ->shouldReceive('resolve')
-            ->with('ArrayName')
+            ->with($arrayName)
             ->andReturn($entityParser)
             ->once()
             ->getMock();
         $parser = new ArrayParser($parserResolver);
 
-        $parsed = $parser->parse("\x02ArrayName\x03,3,\r\n\tserialised\r\n\tserialised\r\n\tserialised\r\n");
+        $parsed = $parser->parse(
+            $arrayName,
+            $arrayLength,
+            "\tserialised\r\n\tserialised\r\n\tserialised\r\n"
+        );
+
         $this->assertEquals([$entity, $entity, $entity], $parsed);
     }
 }
