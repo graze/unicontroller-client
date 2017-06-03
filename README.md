@@ -9,6 +9,8 @@
 
 A Domino Unicontroller client written in PHP.
 
+Check out the [Class Generator Readme](bin/README.md) to see how this client was written.
+
 ## Install
 
 Via Composer
