@@ -29,9 +29,11 @@ $client = Graze\UnicontrollerClient\UnicontrollerClient::factory();
 $dsn = '172.16.1.1:9100';
 $client->connect($dsn);
 
-# read an existing design
+# send the 'ReadDesign' command to the printer
 $designName = 'current.Design';
 $designCurrent = $client->ReadDesign($designName, 0, 0);
+
+# client returns the 'ReadDesign' entity, as defined in the Unicontroller specification
 if (!$designCurrent->getReadOk()) {
     echo sprintf('failed to read design, does %s exist?', $designName);
     exit;
