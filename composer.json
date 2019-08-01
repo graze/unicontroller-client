@@ -9,11 +9,6 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "John Smith",
-            "email": "john@graze.com",
-            "role": "Developer"
-        },
-        {
             "name": "Graze Developers",
             "email": "developers@graze.com",
             "homepage": "http://www.graze.com",

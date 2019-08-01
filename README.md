@@ -95,7 +95,6 @@ If you discover any security related issues, please email security@graze.com ins
 
 ## Credits
 
-- [John Smith](https://github.com/john-n-smith)
 - [All Contributors](../../contributors)
 
 ## License
