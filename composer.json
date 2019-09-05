@@ -17,15 +17,15 @@
     ],
     "require": {
         "php": "^5.5",
-        "symfony/var-dumper": "^3.1",
         "league/climate": "^3.2",
         "clue/socket-raw": "^1.2"
     },
     "require-dev": {
+        "graze/standards": "^1.0",
+        "mockery/mockery": "^0.9.5",
         "phpunit/phpunit" : "5.*",
         "squizlabs/php_codesniffer": "^2.5",
-        "graze/standards": "^1.0",
-        "mockery/mockery": "^0.9.5"
+        "symfony/var-dumper": "^3.1"
     },
     "autoload": {
         "psr-4": {
